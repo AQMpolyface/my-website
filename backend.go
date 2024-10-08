@@ -64,8 +64,17 @@ w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
         fmt.Println("error decoding message", err)
       return
     }
-    os.WriteFile("messages.txt", []byte(decodedMessage), 0644)
-        // Create a response messag
+
+
+		messageFileHandler, err := os.OpenFile("messages.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal("error opening message file:", err)
+		}
+		defer messageFileHandler.Close()
+
+    messageFileHandler.WriteString(decodedMessage)
+
+   // os.WriteFile("messages.txt", []byte(decodedMessage), 0644)
     timeString:= time.Now().Format("15:04:05")
         responseMessage := fmt.Sprintf("<h3>Thanks for your submission. it is now %s in my timezone, so i will see when i can get back at you!</h3>", timeString)
 
