@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-
+  http.HandleFunc("/privacy_policy", privacyPolicyHandler)
+  http.HandleFunc("/blahaj", blahajHandler)
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/about", aboutHandler)
   http.HandleFunc("/projects", projectsHandler)
@@ -16,10 +17,30 @@ func main() {
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
+func privacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
+  privacyPolicyData, err := os.ReadFile("html/blahaj.html")
+if err != nil {
+    fmt.Println("error reading blahaj.html", err)
+    return
+}
+fmt.Fprint(w, string(privacyPolicyData))
+}
+
+func blahajHandler(w http.ResponseWriter, r *http.Request) {
+
+  blahajData, err := os.ReadFile("html/blahaj.html")
+if err != nil {
+    fmt.Println("error reading blahaj.html", err)
+    return
+}
+  
+  fmt.Fprint(w, string(blahajData))
+
+}
 func projectsHandler(w http.ResponseWriter, r *http.Request) {
   projectsData, err := os.ReadFile("html/projects.html")
       if err != nil {
-      fmt.Println("error reading projects.html")
+      fmt.Println("error reading projects.html", err)
         return
   }
 
