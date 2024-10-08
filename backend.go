@@ -13,7 +13,9 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/about", aboutHandler)
   http.HandleFunc("/projects", projectsHandler)
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
+ 
+  http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
+  http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
