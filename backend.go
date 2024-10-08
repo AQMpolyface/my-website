@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	// "strings"
 )
 
 const savefile string = "/home/polyface/Desktop/go/site2/data.json"
@@ -15,6 +14,7 @@ const jsonDb string = "/home/polyface/Desktop/go/site2/db.json"
 func main() {
 
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/about", aboutHandler)
 
 	http.Handle("/uwu", http.FileServer(http.Dir("./")))
 
@@ -24,13 +24,22 @@ func main() {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 
-	indexData, err := os.ReadFile("index.html")
+	indexData, err := os.ReadFile("html/index.html")
 	if err != nil {
 		fmt.Println("error reading index.html", err)
 		return
 
 	}
 	fmt.Fprint(w, string(indexData))
+}
+func aboutHandler(w http.ResponseWriter, r *http.Request) {
+  aboutData, err := os.ReadFile("html/about.html")
+  if err != nil {
+    fmt.Println("error reading about.html", err)
+    return
+  }
+fmt.Fprint(w, string(aboutData))
+
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
