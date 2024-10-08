@@ -54,13 +54,14 @@ w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
         }
         defer r.Body.Close()
     fmt.Println(string(body))
-        email := r.FormValue("email")
-        message := r.FormValue("message")
+  //      email := r.FormValue("email")
+    //    message := r.FormValue("message")
 
-dataToWrite := fmt.Sprintf("email: %s\nmessage: %s", email, message)
-    os.WriteFile("messages", []byte(dataToWrite), 0644)
-        // Create a response message
-        responseMessage := fmt.Sprintf("<h3>Thanks for your submission. it is now %d in my timezone, so i will see when i can get back at you!</h3>", time.Now().Format("15:04:05"))
+//dataToWrite := fmt.Sprintf("email: %s\nmessage: %s", email, message)
+    os.WriteFile("messages.txt", body, 0644)
+        // Create a response messag
+    timeString:= time.Now().Format("15:04:05")
+        responseMessage := fmt.Sprintf("<h3>Thanks for your submission. it is now %s in my timezone, so i will see when i can get back at you!</h3>", timeString)
 
 
 
