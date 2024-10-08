@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+http.HandleFunc("/contact", contactHandler)
   http.HandleFunc("/privacy_policy", privacyPolicyHandler)
   http.HandleFunc("/blahaj", blahajHandler)
 	http.HandleFunc("/", indexHandler)
@@ -21,6 +22,17 @@ func main() {
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
+
+func contactHandler(w http.ResponseWriter, r *http.Request) {
+ contactData, err := os.ReadFile("html/contact.html")
+if err != nil {
+    fmt.Println("error reading contact.html", err)
+    return
+}
+fmt.Fprint(w, string(contactData))
+
+}
+
 func formHandler(w http.ResponseWriter, r *http.Request) {
 
 w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -48,14 +60,13 @@ w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 dataToWrite := fmt.Sprintf("email: %s\nmessage: %s", email, message)
     os.WriteFile("messages", []byte(dataToWrite), 0644)
         // Create a response message
-        responseMessage := fmt.Sprintf("<h3>§Thanks for your submission. it is now %d in my timezone, so i will see when i can get back at you!</h3>", time.Now().Format("15:04:05"))
-    
+        responseMessage := fmt.Sprintf("<h3>Thanks for your submission. it is now %d in my timezone, so i will see when i can get back at you!</h3>", time.Now().Format("15:04:05"))
 
 
 
-    // Send the response back to HTMX
-        w.Write([]byte(responseMessage))
+//        w.Write([]byte(responseMessage))
 
+     fmt.Fprint(w, responseMessage) 
 }
 }
 
