@@ -1,3 +1,0 @@
-○ nginx.service - The nginx HTTP and reverse proxy server
-     Loaded: loaded (]8;;file://polyface-server/usr/lib/systemd/system/nginx.service/usr/lib/systemd/system/nginx.service]8;;; [0;1;38;5;185mdisabled[0m; preset: [0;1;38;5;185mdisabled[0m)
-     Active: inactive (dead)
