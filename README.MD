@@ -1,1 +1,1 @@
-this is my website. I wont publish the ip/domain till i finish it tho, hust wante to start working on it.
+this is my website. I wont publish the ip/domain until i finish it, or at least make it ok.
