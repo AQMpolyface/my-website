@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	// "strings"
 )
 
 const savefile string = "/home/polyface/Desktop/go/site2/data.json"
@@ -15,16 +14,17 @@ const jsonDb string = "/home/polyface/Desktop/go/site2/db.json"
 func main() {
 
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/about", aboutHandler)
 
 	http.Handle("/uwu", http.FileServer(http.Dir("./")))
 
-	fmt.Println("Server started at :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Server started at :80")
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 
-	indexData, err := os.ReadFile("index.html")
+	indexData, err := os.ReadFile("html/index.html")
 	if err != nil {
 		fmt.Println("error reading index.html", err)
 		return
@@ -32,9 +32,17 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprint(w, string(indexData))
 }
+func aboutHandler(w http.ResponseWriter, r *http.Request) {
+  aboutData, err := os.ReadFile("html/about.html")
+  if err != nil {
+    fmt.Println("error reading about.html", err)
+    return
+  }
+fmt.Fprint(w, string(aboutData))
+
+}
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	//var option string
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
