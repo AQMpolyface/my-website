@@ -20,7 +20,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
 func privacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
-  privacyPolicyData, err := os.ReadFile("html/blahaj.html")
+  privacyPolicyData, err := os.ReadFile("html/privacy_policy.html")
 if err != nil {
     fmt.Println("error reading blahaj.html", err)
     return
