@@ -18,8 +18,8 @@ func main() {
 
 	http.Handle("/uwu", http.FileServer(http.Dir("./")))
 
-	fmt.Println("Server started at :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Server started at :80")
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,6 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	//var option string
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
