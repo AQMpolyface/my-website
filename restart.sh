@@ -1,6 +1,8 @@
 #!/bin/bash
 kill $(ps aux | grep go | awk '{print $2}')
 
-nginx -t
 
-nohup go run backend.go & disown
+nginx -t
+rm nohup.out
+
+nohup go run main.go & disown

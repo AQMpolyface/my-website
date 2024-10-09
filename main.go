@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"./binairies"
+  "/root/website/binairies"
 	"regexp"
 	"time"
 )
