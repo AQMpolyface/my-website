@@ -7,23 +7,22 @@ body, h1, p {
     padding: 0;
 }
 
-.link {
+/*.link {
     background-color: aquamarine;
     padding: 5px;
-}
+} */
 
-.link:hover {
+/*.link:hover {
     background-color: aqua;
     padding: 10px;
-}
+}*/
 
 body {
-    background: linear-gradient(135deg, #ea00ff, #b813da);
+    background: linear-gradient(135deg, #4c078b, #b813da);
     font-family: Arial, sans-serif;
     color: #ffffff;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
 .container {

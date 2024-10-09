@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>save your spotify playlist to json</title>
+    <link rel="stylesheet" href="/css/playlist-json.css"> 
+    <link rel="stylesheet" href="/css/general.css">
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+</head>
+<body>
+    <form  hx-post="/submit-playlist-json"  hx-on="htmx:responseError:errorMessage"> 
+        <label for="token">Enter your token here.</label>
+        <input type="token" id="token" name="token" required placeholder="Enter your token"><br><br>
+       
+        <label for="verbose">enable verbosity?</label>
+        <input type="checkbox" id="verbosity" name="verbosity" value="1">
+        <input type="submit" value="Submit" onsubmit="printValues()">
+    </form>
+
+    <script>
+
+
+
+
+
+        function printValues() {
+
+
+
+
+        }
+    </script>

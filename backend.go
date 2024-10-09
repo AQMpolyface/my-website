@@ -8,7 +8,8 @@ import (
 	"net/url"
 	"os"
 	"time"
-  "regexp"
+	"regexp"
+	"playlist-json"
 )
 
 func main() {
@@ -18,6 +19,7 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/projects", projectsHandler)
+	http.HandleFunc("/submit-playlist-json", playlist-json.playlistJson())
 	http.HandleFunc("/submit", formHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
@@ -44,11 +46,10 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
-		fmt.Fprintln(w, "I'm a teapot")
+		fmt.Fprintln(w, "I'm a teapot!")	
 	}
 
 	if r.Method == http.MethodPost {
-		// Read the request body
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			http.Error(w, "Unable to read request body", http.StatusBadRequest)
