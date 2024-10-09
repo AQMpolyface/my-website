@@ -85,8 +85,12 @@ if !emailTrue {
 		defer messageFileHandler.Close()
 
 		messageFileHandler.WriteString(decodedMessage)
-
-		timeString := time.Now().Format("15:04:05")
+    location, err := time.LoadLocation("Europe/Zurich")
+          if err != nil {
+        fmt.Println("error getting location:", err)
+    } 
+    currentTime := time.Now().In(location)
+		timeString := currentTime.Format("15:04:05")
 		responseMessage := fmt.Sprintf("<h3>Thanks for your submission. it is now %s in my timezone, so i will see when i can get back at you!</h3>", timeString)
 
 		fmt.Fprint(w, responseMessage)
