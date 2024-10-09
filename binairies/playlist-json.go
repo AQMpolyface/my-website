@@ -1,4 +1,4 @@
-package playlist-json
+package playlistjson
 
 import (
 	"net/http"
@@ -31,7 +31,7 @@ const endpoint string = "https://api.spotify.com/v1/me/playlists"
 
 const playlistUrl string = "https://api.spotify.com/v1/playlists/"
 
-func playlistJson(w http.ResponseWriter, r *http.Request) {
+func PlaylistJson(w http.ResponseWriter, r *http.Request) {
 
 	
 	w.Header().Set("Access-Control-Allow-Origin", "*")

@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"time"
+	"./binairies"
 	"regexp"
-	"playlist-json"
+	"time"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/projects", projectsHandler)
-	http.HandleFunc("/submit-playlist-json", playlist-json.playlistJson())
+	http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)  
 	http.HandleFunc("/submit", formHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
@@ -46,7 +46,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
-		fmt.Fprintln(w, "I'm a teapot!")	
+		fmt.Fprintln(w, "I'm a teapot!")
 	}
 
 	if r.Method == http.MethodPost {
@@ -62,37 +62,37 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("error decoding message", err)
 			return
 
-    }
+		}
 
 		fmt.Println(string(decodedMessage))
-    values, err := url.ParseQuery(decodedMessage)
-	if err != nil {
-		fmt.Println("Error parsing query string:", err)
-		return
-	}
-emailRegex := `(?:[a-z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\$$\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)$$)`
-    emailTrue, err := regexp.MatchString(emailRegex, values.Get("email"))
-            if err != nil {
-      fmt.Println("error parsing email:", err)
-      return
-    }
-if !emailTrue {
-      errorMessage := fmt.Sprintf("<p>Error: %s isnt an email! please enter a valid email.</p>", values.Get("email"))
-      fmt.Fprint(w, errorMessage)
-    }
+		values, err := url.ParseQuery(decodedMessage)
+		if err != nil {
+			fmt.Println("Error parsing query string:", err)
+			return
+		}
+		emailRegex := `(?:[a-z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\$$\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)$$)`
+		emailTrue, err := regexp.MatchString(emailRegex, values.Get("email"))
+		if err != nil {
+			fmt.Println("error parsing email:", err)
+			return
+		}
+		if !emailTrue {
+			errorMessage := fmt.Sprintf("<p>Error: %s isnt an email! please enter a valid email.</p>", values.Get("email"))
+			fmt.Fprint(w, errorMessage)
+		}
 
 		messageFileHandler, err := os.OpenFile("messages.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
 			log.Fatal("error opening message file:", err)
 		}
 		defer messageFileHandler.Close()
-      decodedMessage += "\n"
+		decodedMessage += "\n"
 		messageFileHandler.WriteString(decodedMessage)
-    location, err := time.LoadLocation("Europe/Zurich")
-          if err != nil {
-        fmt.Println("error getting location:", err)
-    } 
-    currentTime := time.Now().In(location)
+		location, err := time.LoadLocation("Europe/Zurich")
+		if err != nil {
+			fmt.Println("error getting location:", err)
+		}
+		currentTime := time.Now().In(location)
 		timeString := currentTime.Format("15:04:05")
 		responseMessage := fmt.Sprintf("<h3>Thanks for your submission. it is now %s in my timezone, so i will see when i can get back at you!</h3>", timeString)
 
