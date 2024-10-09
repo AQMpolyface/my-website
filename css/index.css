@@ -1,19 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
 body, h1, p {
     margin: 0;
     padding: 0;
 }
 
+.link {
+    background-color: aquamarine;
+    padding: 5px;
+}
+
+.link:hover {
+    background-color: aqua;
+    padding: 10px;
+}
+
 body {
-    background: linear-gradient(135deg, #6a5acd, #00bfff);
+    background: linear-gradient(135deg, #ea00ff, #b813da);
     font-family: Arial, sans-serif;
     color: #ffffff;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
+    flex: 1;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.1);
     padding: 20px;
@@ -42,5 +56,6 @@ a {
 
 .learn-more:hover, .projects-link:hover {
     background-color: rgba(255, 255, 255, 0.2);
-    color: #00bfff;
+    color: #4759ff;
 }
+

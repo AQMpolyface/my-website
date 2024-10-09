@@ -1,0 +1,36 @@
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #toReplace {
+            margin-bottom: 20px;
+        }
+
+        .textarea-container {
+            display: flex;
+            flex-direction: column; 
+            margin-bottom: 10px; 
+        }
+
+        textarea {
+            width: 100%; 
+          margin-bottom: 5px;
+        }
+
+        #errorMessage {
+            color: red; 
+            margin-bottom: 10px;         
+        }
+
+        h5 {
+            margin: 10px 0; 
+        }
+
+        footer {
+            margin-top: 20px; 
+            border-top: 1px solid #ccc; 
+            padding-top: 10px;
+        }
+
