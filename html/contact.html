@@ -12,24 +12,16 @@
     <script>
         function errorMessage() {
             const errorDiv = document.getElementById("errorMessage");
-            const email = document.getElementById("email").value;
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (!emailPattern.test(email)) {
                 errorDiv.innerText = `Error: ${email} isn't a valid email!`;
                 errorDiv.style.color = 'red'; 
-                return false;           
-    }
-
-            errorDiv.innerText = ''; 
-            return true; 
-        }
+                   }
     </script>
   </head>
 <body>
     <div id="toReplace">
         <h2>Contact Us</h2>
-        <form onsubmit="return errorMessage()" hx-post="/submit" hx-target="#toReplace" hx-on="htmx:responseError:errorMessage"> 
+        <form  hx-post="/submit" hx-target="#toReplace" hx-on="htmx:responseError:errorMessage"> 
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required placeholder="Enter your email"><br><br>
 
@@ -42,7 +34,7 @@
     <div id="errorMessage"></div>
     <h5>or contact me on my email:<a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></h5>
     <h5>or on simplex (private messaging app):<a href="https://simplex.chat/contact#/?v=2-7&smp=smp%3A%2F%2Fh--vW7ZSkXPeOUpfxlFGgauQmXNFOzGoizak7Ult7cw%3D%40smp15.simplex.im%2F-VHhcfG4alpMIYVoWgL2kc3dsFf7IQNE%23%2F%3Fv%3D1-3%26dh%3DMCowBQYDK2VuAyEAwYBZWNfun2VHEqHWQ_GV4p41VkhZiuodVdTjgg2GxyA%253D%26srv%3Doauu4bgijybyhczbnxtlggo6hiubahmeutaqineuyy23aojpih3dajad.onion">link</a></h5>
-        <a href="/" class="goBackIndex">go back to index</a>  4
+        <a href="/" class="goBackIndex" role="button">go back to index</a>  
         <footer>
             <p>Author: me :3</p>
             <p><a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></p>
