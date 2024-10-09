@@ -55,14 +55,16 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer r.Body.Close()
-		fmt.Println(string(body))
 
 		decodedMessage, err := url.QueryUnescape(string(body))
 		if err != nil {
 			fmt.Println("error decoding message", err)
 			return
-		}
-values, err := url.ParseQuery(decodedMessage)
+
+    }
+
+		fmt.Println(string(decodedMessage))
+    values, err := url.ParseQuery(decodedMessage)
 	if err != nil {
 		fmt.Println("Error parsing query string:", err)
 		return
@@ -83,7 +85,7 @@ if !emailTrue {
 			log.Fatal("error opening message file:", err)
 		}
 		defer messageFileHandler.Close()
-
+      decodedMessage += "\n"
 		messageFileHandler.WriteString(decodedMessage)
     location, err := time.LoadLocation("Europe/Zurich")
           if err != nil {
@@ -100,7 +102,7 @@ if !emailTrue {
 func privacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 	privacyPolicyData, err := os.ReadFile("html/privacy_policy.html")
 	if err != nil {
-		fmt.Println("error reading blahaj.html", err)
+		fmt.Println("error reading privacy_policy.html", err)
 		return
 	}
 	fmt.Fprint(w, string(privacyPolicyData))
