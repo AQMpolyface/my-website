@@ -6,8 +6,10 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	//playlistjson "website/binairies"
+  
+	//"./binairies"
 	"os"
-  "/root/website/binairies"
 	"regexp"
 	"time"
 )
@@ -19,18 +21,27 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/projects", projectsHandler)
-	http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)  
+	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
+	//http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)
 	http.HandleFunc("/submit", formHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
+func playlistjsonHandler(w http.ResponseWriter, r *http.Request) {
+	playlistjsonHtml, err := os.ReadFile("html/projects/playlistjson.html")
+	if err != nil {
+		fmt.Println("error reading playlistjson.html:", err)
+		return
+	}
+	fmt.Fprint(w, string(playlistjsonHtml))
+}
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
 	contactData, err := os.ReadFile("html/contact.html")
 	if err != nil {
-		fmt.Println("error reading contact.html", err)
+		fmt.Println("error reading contact.html:", err)
 		return
 	}
 	fmt.Fprint(w, string(contactData))
