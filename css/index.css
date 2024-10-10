@@ -21,7 +21,7 @@ text-align: center;
 
 
   .trollButton {
-    transition: background-color 0.3s, transform 0.3s;
+    transition: transform 0.3s;
     color: white;
     border: none;
     padding: 10px 20px;
