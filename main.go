@@ -14,6 +14,9 @@ import (
 	"time"
 )
 
+
+const visits := "visits.txt"
+
 func main() {
 	http.HandleFunc("/contact", contactHandler)
 	http.HandleFunc("/privacy_policy", privacyPolicyHandler)
@@ -149,6 +152,27 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
+
+	visitsFile, err := os.Open(visits)
+	if err != nil {
+		log.Fatal("error opening message visits.txt:", err)
+	}
+	defer visits.Close()
+
+	numberOfVisits, err := io.ReadAll(visitsFile)
+	if err != nil {
+		log.Fatal("error reading visits file:", err)
+	}
+
+	numberOfVisits += 1
+
+
+	indec, err := os.OpenFile(visits, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		log.Fatal("error opening visits file:", err)
+	}
+	defer indec.Close()
+	indec.WriteString(numberOfVisits)
 	fmt.Fprint(w, string(indexData))
 }
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
