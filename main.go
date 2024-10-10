@@ -20,6 +20,7 @@ import (
 const visits string = "visits.txt"
 
 func main() {
+
 	http.HandleFunc("/contact", contactHandler)
 	http.HandleFunc("/privacy_policy", privacyPolicyHandler)
 	http.HandleFunc("/blahaj", blahajHandler)
