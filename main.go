@@ -13,7 +13,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
-	"time"
+	//"time"
 )
 
 
@@ -105,13 +105,45 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 		defer messageFileHandler.Close()
 		decodedMessage += "\n"
 		messageFileHandler.WriteString(decodedMessage)
-		location, err := time.LoadLocation("Europe/Zurich")
+		/*location, err := time.LoadLocation("Europe/Zurich")
 		if err != nil {
 			fmt.Println("error getting location:", err)
 		}
-		currentTime := time.Now().In(location)
-		timeString := currentTime.Format("15:04:05")
-		responseMessage := fmt.Sprintf("<h3>Thanks for your submission. it is now %s in my timezone, so i will see when i can get back at you!</h3>", timeString)
+		//currentTime := time.Now().In(location)
+		timeString := currentTime.Format("15:04:05")*/
+		responseMessage := `<h3>Thanks for your submission. it is now <span id="time">uwu</span> in my timezone, so i will see when i can get back at you!</h3>
+		<script>	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	async function time() {
+	timeNow = document.getElementById("time");
+
+	const options = {
+	timeZone: 'Europe/Zurich',
+	 dateStyle: 'full',
+	 timeStyle: 'long',
+	 /*hour: '2-digit',
+	minute: '2-digit',
+	second: '2-digit',
+	hour12: false*/
+	};
+
+	const formatter = new Intl.DateTimeFormat('en-US', options);
+	while (true) {
+
+		let date = new Date();
+		let formattedDate = formatter.format(date);
+		timeNow.innerHTML = formattedDate;
+		await sleep(1000);
+
+	}
+
+	}
+
+	time()
+	</script>
+		`
 
 		fmt.Fprint(w, responseMessage)
 	}
@@ -153,7 +185,6 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("error reading index.html", err)
 		return
-
 	}
 	visitsFile, err := os.Open(visits)
 	if err != nil {
