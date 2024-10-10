@@ -15,7 +15,7 @@ import (
 )
 
 
-const visits := "visits.txt"
+const visits string = "visits.txt"
 
 func main() {
 	http.HandleFunc("/contact", contactHandler)
