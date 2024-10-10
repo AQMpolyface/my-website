@@ -8,18 +8,19 @@
     text-align: center;
 }
 
-/*
+
 a {
     display: inline-block;
-    background-color: #007BFF;
+    background-color: #286aa7;
     color: white;
     padding: 10px 15px;
+    border: none;
     border-radius: 5px;
-    text-decoration: none;
     transition: background-color 0.3s, transform 0.3s;
-}
-
-a:hover {
-    background-color: #0056b3;
+  
+  }
+  
+  a:hover {
+    background-color: #218838;
     transform: scale(1.05);
-}*/
+  }
