@@ -18,7 +18,7 @@ h1 {
     margin-bottom: 20px;
     color: #2c3e50;
 }
-
+*/
 .projectContainer {
     display: flex;
     flex-direction: column;
@@ -58,4 +58,4 @@ h1 {
 
 .projectContainer a:hover {
     text-decoration: underline;
-}*/
+}
