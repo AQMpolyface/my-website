@@ -16,7 +16,38 @@
         <p><a href="/contact"  class="link" role="button">Contact me!</a></p>
         <p><a href="/privacy_policy" class="link" role="button">privacy policy</a></p>
     </div>
-    
+    <div class="container" id="trollcontainer">
+    <h5>do you like my website?</h5>
+
+    <button id="yes" class="trollButton">yes</button>
+    <button id="no" class="trollButton">no</button>
+
+    </div>
+    <script>
+    let yesbutton = document.getElementById("yes");
+  let  nobutton = document.getElementById("no");
+    nobutton.addEventListener("mouseover",() =>{
+    nobutton.innerHTML = "yes";
+    yesbutton.innerHTML = "no"
+
+    nobutton.setAttribute("id", "yes")
+    yesbutton.setAttribute("id", "no")
+
+    yesbutton.addEventListener("mouseover", () => {
+
+    nobutton.innerHTML = "no";
+    yesbutton.innerHTML = "yes"
+
+    nobutton.setAttribute("id", "no")
+    yesbutton.setAttribute("id", "yes")
+
+    });
+});
+  yesButton.addEventListener("click", () => {
+        alert("You pressed the Yes button!");
+        // You can add more functionality here
+    });
+    </script>
     <footer>
         <p>Author: me :3</p>
         <p><a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></p>

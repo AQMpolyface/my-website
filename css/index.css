@@ -6,21 +6,44 @@
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+     margin-bottom: 20px;
+}
+
+#trollcontainer {
+max-width: 800px;
+margin: 0 auto;
+padding: 20px;
+background: #fff;
+border-radius: 8px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+text-align: center;
 }
 
 
-a {
-    display: inline-block;
-    background-color: #286aa7;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
+  .trollButton {
     transition: background-color 0.3s, transform 0.3s;
-  
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
   }
-  
-  a:hover {
-    background-color: #218838;
-    transform: scale(1.05);
+
+  #yes {
+  background-color: #4CAF50;
+  }
+
+  #yes:hover {
+  background-color: #45a049;
+  transform: scale(1.03);
+  }
+
+  #no {
+  background-color: #f44336;
+  }
+
+  #no:hover {
+  background-color: #e53935;
+  transform: scale(1.03);
   }
