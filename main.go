@@ -1,5 +1,6 @@
 package main
 
+
 import (
 	"fmt"
 	"io"
@@ -7,10 +8,12 @@ import (
 	"net/http"
 	"net/url"
 	//playlistjson "website/binairies"
-  
+	"strconv"
 	//"./binairies"
+	//"os/exec"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -152,27 +155,38 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
-
 	visitsFile, err := os.Open(visits)
 	if err != nil {
 		log.Fatal("error opening message visits.txt:", err)
 	}
-	defer visits.Close()
+	defer visitsFile.Close()
 
-	numberOfVisits, err := io.ReadAll(visitsFile)
+	numberOfVisitsByte, err := io.ReadAll(visitsFile)
 	if err != nil {
 		log.Fatal("error reading visits file:", err)
 	}
+	str := string(numberOfVisitsByte)
+		str = strings.TrimSpace(str)
 
+	numberOfVisits, err := strconv.Atoi(string(str))
+	if err != nil {
+		fmt.Println("Error converting string to int:", err)
+		return
+	}
 	numberOfVisits += 1
-
+	fmt.Println(numberOfVisits)
 
 	indec, err := os.OpenFile(visits, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		log.Fatal("error opening visits file:", err)
 	}
 	defer indec.Close()
-	indec.WriteString(numberOfVisits)
+	_, err = indec.WriteString(strconv.Itoa(numberOfVisits))
+	if err != nil {
+		log.Fatal("error writing to file:", err)
+	}
+
+ //exec.Command("./visits.sh")
 	fmt.Fprint(w, string(indexData))
 }
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
