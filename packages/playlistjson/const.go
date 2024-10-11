@@ -2,7 +2,7 @@
 package playlistjson
 
 const (
-	endpoint   = "https://api.spotify.com/v1/me/playlists"
+	endpoint    = "https://api.spotify.com/v1/me/playlists"
 	playlistUrl = "https://api.spotify.com/v1/playlists/"
 )
 
@@ -27,4 +27,3 @@ type Track struct {
 	Name string `json:"name"`
 	ID   string `json:"id"`
 }
-

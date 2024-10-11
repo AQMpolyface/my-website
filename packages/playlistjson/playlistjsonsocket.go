@@ -5,20 +5,17 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 	"net/http"
+	"os"
 	//"net/url"
-	"time"
 	"math/rand"
+	"time"
 	//"github.com/gorilla/websocket"
-//	"site/packages/playlistjson"
+	//	"site/packages/playlistjson"
 )
-
-
 
 func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 
-	
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -28,15 +25,14 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 		fmt.Println("teapot party")
 		w.WriteHeader(418)
 		fmt.Fprintln(w, "I'm a teapot!")
-		}
+	}
 
-	
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Unable to read request body", http.StatusBadRequest)
-			return
-		}
-		defer r.Body.Close()
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Unable to read request body", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
 
 	req, err := http.NewRequest("GET", endpoint, nil)
 
@@ -53,18 +49,18 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 	body, err = io.ReadAll(resp.Body)
 	if err != nil {
 		errorMessage := fmt.Sprintf("error reading the body: %s", err)
-		fmt.Fprint(w, "<p>" + errorMessage + "</p>")
+		fmt.Fprint(w, "<p>"+errorMessage+"</p>")
 	}
 
 	if resp.Header.Get("Retry-After") != "" {
 		errorMessage := fmt.Sprintf("rate limited by the spotify api, you ran the code too much, retry in %s:\n %s", resp.Header.Get("Retry-After"), string(body))
-		fmt.Fprint(w, "<p>" + errorMessage + "</p>")
+		fmt.Fprint(w, "<p>"+errorMessage+"</p>")
 		return
 
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		fmt.Fprint(w, "token probably need to be refreshed:" +  string(body))
+		fmt.Fprint(w, "token probably need to be refreshed:"+string(body))
 		return
 	}
 
@@ -106,8 +102,7 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 			return
 		}
 
-
-    for _, item := range musicData.Items {
+		for _, item := range musicData.Items {
 			fmt.Println(item.Track.Name)
 			fmt.Println(item.Track.ID)
 		}
@@ -120,7 +115,7 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 
 		randomNumber := rand.Intn(10000)
 
-		playlistFile := "temp/" + string(time.Now().UnixNano() / int64(randomNumber)) + ".json"
+		playlistFile := "temp/" + string(time.Now().UnixNano()/int64(randomNumber)) + ".json"
 
 		fileWriter, err := os.OpenFile(playlistFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
