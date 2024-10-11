@@ -7,18 +7,17 @@ import (
 	"log"
 	"os"
 	"net/http"
-	//"net/url"
+//"net/url"
 	"time"
 	"math/rand"
+	"strconv"
 	//"github.com/gorilla/websocket"
-//	"site/packages/playlistjson"
 )
 
 
+func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) {
 
-func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 
-	
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -28,19 +27,20 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 		fmt.Println("teapot party")
 		w.WriteHeader(418)
 		fmt.Fprintln(w, "I'm a teapot!")
-		}
+	}
 
-	
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Unable to read request body", http.StatusBadRequest)
-			return
-		}
-		defer r.Body.Close()
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Unable to read request body", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
 
 	req, err := http.NewRequest("GET", endpoint, nil)
 
-	fmt.Println(token)
+
+	//fmt.Println(token)
 	req.Header.Set("Authorization", "Bearer "+token)
 
 	client := &http.Client{}
@@ -75,6 +75,16 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 		return
 	}
 
+	if err := os.MkdirAll("temp", os.ModePerm); err != nil {
+		fmt.Println("Error creating temp directory:", err)
+		return
+	}
+
+	randomNumber := rand.Intn(10000)
+
+	playlistFile := "temp/" + strconv.FormatInt(time.Now().UnixNano()/int64(randomNumber + 1), 10) + ".json"
+
+
 	client = &http.Client{}
 	for _, playlist := range data.Items {
 		fmt.Printf("Playlist Name: %s, ID: %s\n", playlist.Name, playlist.Id)
@@ -107,20 +117,6 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 		}
 
 
-    for _, item := range musicData.Items {
-			fmt.Println(item.Track.Name)
-			fmt.Println(item.Track.ID)
-		}
-
-		//rand.Seed(time.Now().UnixNano())
-		if err := os.MkdirAll("temp", os.ModePerm); err != nil {
-			fmt.Println("Error creating temp directory:", err)
-			return
-		}
-
-		randomNumber := rand.Intn(10000)
-
-		playlistFile := "temp/" + string(time.Now().UnixNano() / int64(randomNumber)) + ".json"
 
 		fileWriter, err := os.OpenFile(playlistFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
@@ -139,5 +135,15 @@ func PlaylistJsonSocket(w http.ResponseWriter, r *http.Request, token string) {
 		if err != nil {
 			log.Fatal("error writing to the .json file:", err)
 		}
+
+	break
+
 	}
+		responseMessage := fmt.Sprintf(`<h4> You can download your json file <a href="%s">here</a></h5>
+		<h5 style="color:red;">Warning: the file will be deleted after downloading it</h5>`, playlistFile)
+		fmt.Fprint(w,  responseMessage)
+
+
+
+
 }

@@ -7,6 +7,75 @@
     <link rel="stylesheet" href="/css/playlist-json.css"> 
     <link rel="stylesheet" href="/css/general.css">
    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+      <script>
+        function waiting() {
+ document.getElementById("loadingMessage").style.display = "flex";
+loading()
+
+                           }
+ function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+                    }
+
+ function elementExistsById(id) {
+    return document.getElementById(id) !== null;
+                                }
+
+async func loadings() {
+loadind = document.getElementById("loading");
+while (true) {
+ if (elementExistsById("loading")) {
+ loadind.innerHTML = "loading.";
+ 		await sleep(1000);
+loadind.innerHTML = "loading.";
+		await sleep(1000);
+loadind.innerHTML = "loading..";
+		await sleep(1000);
+
+loadind.innerHTML = "loading...";
+		await sleep(1000);
+
+} else {
+loadind.innerHTML = "";
+    break
+       }
+            }
+                    }
+    </script>
+    <style>
+       #loadingMessage {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+          .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+  .warning-message {
+            font-size: 18px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+</style>
 </head>
 <body>
     <form  hx-post="/submit-playlist-json"  hx-on="htmx:responseError:errorMessage">
@@ -16,20 +85,24 @@
         <label for="verbose">enable verbosity?</label>
         <input type="checkbox" id="verbosity" name="verbosity" value="1">
         <br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" onClick="waiting()">
     </form>
 
     <div id="verbose-placeholder"></div>
-
-
+    <div id="loadingMessage">
+    <div class="spinner"></div>
+    <div class="warning-message">Warning: Don't leave this page</div>
+    <div id="loading">loading</div>
+    </div>
     <script>
-      const ws = new WebSocket('ws://localhost:3000');
+
+     /* const ws = new WebSocket('ws://localhost:3000');
   ws.onmessage = (event) => {
   const message = JSON.parse(event.data);
     document.getElementById("verbose-placeholder").innerHTML = "message"
 };
 
-//ws.send('Hello from the client!');
+//ws.send('Hello from the client!'); */
 
     </script>
   </body>

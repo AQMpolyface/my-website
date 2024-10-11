@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#useless. html and css auitomatically refreshes.
+#useless. html and css automatically refreshes.
 kill $(ps aux | grep go | awk '{print $2}')
 
 
