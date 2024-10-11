@@ -6,7 +6,7 @@
     <title>save your spotify playlist to json</title>
     <link rel="stylesheet" href="/css/playlist-json.css"> 
     <link rel="stylesheet" href="/css/general.css">
-   <!-- <script src="https://unpkg.com/htmx.org@2.0.3"></script>-->
+   <script src="https://unpkg.com/htmx.org@2.0.3"></script>
 </head>
 <body>
     <form  hx-post="/submit-playlist-json"  hx-on="htmx:responseError:errorMessage">
@@ -19,8 +19,17 @@
         <input type="submit" value="Submit">
     </form>
 
+    <div id="verbose-placeholder"></div>
+
+
     <script>
-        function printValues() {
-        }
+      const ws = new WebSocket('ws://localhost:3000');
+  ws.onmessage = (event) => {
+  const message = JSON.parse(event.data);
+    document.getElementById("verbose-placeholder").innerHTML = "message"
+};
+
+//ws.send('Hello from the client!');
+
     </script>
   </body>

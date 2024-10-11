@@ -1,9 +1,15 @@
 package playlistjson
 
 import (
-	"net/http"
 	"encoding/json"
+	"fmt"
 	"io"
+	"log"
+	"os"
+	"net/http"
+	"net/url"
+	"time"
+	"math/rand"
 )
 
 type Playlist struct {
@@ -63,8 +69,8 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request) {
 
     values, err := url.ParseQuery(decodedMessage)
 	if err != nil {
-		errorMessage := "Error parsing query string:" + err
-		fmt.Fprint("<p>" + errorMessage + "</p>")
+		//errorMessage := fmt.Sprintf("Error parsing query string:%s"  err)
+		//fmt.Println("<p>" + "Error parsing query string:" + err + "</p>")
 		return
 	}
 
@@ -85,7 +91,7 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	body, err = io.ReadAll(resp.Body)
 	if err != nil {
 		errorMessage := fmt.Sprintf("error reading the body: %s", err)
 		fmt.Fprint(w, "<p>" + errorMessage + "</p>")
@@ -147,10 +153,21 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(item.Track.ID)
 		}
 
+		//rand.Seed(time.Now().UnixNano())
+		if err := os.MkdirAll("temp", os.ModePerm); err != nil {
+			fmt.Println("Error creating temp directory:", err)
+			return
+		}
+
+		randomNumber := rand.Intn(10000)
+
+		playlistFile := "temp/" + string(time.Now().UnixNano() / int64(randomNumber)) + ".json"
+
 		fileWriter, err := os.OpenFile(playlistFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
 			log.Fatal("error opening playlist.json file:", err)
 			fmt.Println("uwu")
+			return
 		}
 		defer fileWriter.Close()
 
@@ -161,7 +178,7 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request) {
 
 		_, err = fileWriter.Write(jsonData)
 		if err != nil {
-			log.Fatal("error writing to playlist.json:", err)
+			log.Fatal("error writing to the .json file:", err)
 		}
 	}
 }

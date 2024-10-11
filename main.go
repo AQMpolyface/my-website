@@ -14,6 +14,7 @@ import (
 	"regexp"
 	"strings"
 	//"time"
+	"website/packages/playlistjson"
 )
 
 
@@ -28,7 +29,7 @@ func main() {
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/projects", projectsHandler)
 	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
-	//http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)
+	http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)
 	http.HandleFunc("/submit", formHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
