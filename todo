@@ -2,3 +2,5 @@ include playlist-json
 host a few file
 make better html & css everywhere.
 add a blog part
+
+add websocket when verbose = true

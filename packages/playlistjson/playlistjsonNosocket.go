@@ -7,17 +7,13 @@ import (
 	"log"
 	"os"
 	"net/http"
-//"net/url"
 	"time"
 	"math/rand"
 	"strconv"
-	//"github.com/gorilla/websocket"
 )
 
 
 func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) {
-
-
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -139,11 +135,9 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) {
 	break
 
 	}
+		fmt.Println(playlistFile)
 		responseMessage := fmt.Sprintf(`<h4> You can download your json file <a href="%s">here</a></h5>
 		<h5 style="color:red;">Warning: the file will be deleted after downloading it</h5>`, playlistFile)
 		fmt.Fprint(w,  responseMessage)
-
-
-
 
 }
