@@ -7,10 +7,12 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+
 	//"os/exec"
 	"os"
 	"regexp"
 	"strings"
+
 	//"time"
 	"website/packages/playlistjson"
 )
@@ -46,9 +48,21 @@ func uwuHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error reading uwu.html", http.StatusInternalServerError)
 		return
 	}
+	uwunumber, err := os.ReadFile("uwunumber.txt")
+	if err != nil {
+		fmt.Println("reading uwu.txt", err)
+		http.Error(w, "Error reading uwu.txt", http.StatusInternalServerError)
+	}
+	numberOfUwu, err := strconv.Atoi(string(uwunumber))
+	if err != nil {
+		fmt.Println("reading uwu.txt", err)
+		http.Error(w, "Error reading uwu.txt", http.StatusInternalServerError)
+	}
+	numberOfUwu++
+	os.WriteFile("uwunumber.txt", []byte(fmt.Sprintf("%d", numberOfUwu)), 0644)
+
 	fmt.Fprint(w, string(uwuData))
 }
-
 
 func tempFileHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -76,11 +90,11 @@ func tempFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = os.Remove(playlistFile)
-		if err != nil {
-			fmt.Println("error deleting file " + playlistFile, err)
-			log.Fatal("error deleting file " + playlistFile, err)
+	if err != nil {
+		fmt.Println("error deleting file "+playlistFile, err)
+		log.Fatal("error deleting file "+playlistFile, err)
 
-		}
+	}
 
 }
 
