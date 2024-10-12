@@ -59,6 +59,7 @@ func uwuHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error reading uwu.txt", http.StatusInternalServerError)
 	}
 	numberOfUwu++
+	fmt.Println(numberOfUwu)
 	os.WriteFile("uwunumber.txt", []byte(fmt.Sprintf("%d", numberOfUwu)), 0644)
 
 	fmt.Fprint(w, string(uwuData))
