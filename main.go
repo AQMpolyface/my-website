@@ -32,11 +32,23 @@ func main() {
 	//http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)
 	http.HandleFunc("/submit-playlist-json", playlistjsonHandlerPost)
 	http.HandleFunc("/submit", formHandler)
+	http.HandleFunc("/uwu", uwuHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
+func uwuHandler(w http.ResponseWriter, r *http.Request) {
+
+	uwuData, err := os.ReadFile("html/uwu.html")
+	if err != nil {
+		fmt.Println("reading uwu.html", err)
+		http.Error(w, "Error reading uwu.html", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprint(w, string(uwuData))
+}
+
 
 func tempFileHandler(w http.ResponseWriter, r *http.Request) {
 

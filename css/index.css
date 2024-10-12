@@ -30,7 +30,7 @@ text-align: center;
     cursor: pointer;
   }
 
-  #yes {
+  /*#yes {
   background-color: #4CAF50;
   }
 
@@ -46,4 +46,4 @@ text-align: center;
   #no:hover {
   background-color: #e53935;
   transform: scale(1.03);
-  }
+  }*/
