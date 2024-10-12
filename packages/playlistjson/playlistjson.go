@@ -125,7 +125,6 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 			return "", ""
 
 		}
-		break
 	}
 	data2, err := os.ReadFile(playlistFile)
 	if err != nil {
