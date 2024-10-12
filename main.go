@@ -62,6 +62,14 @@ func tempFileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error writing response", http.StatusInternalServerError)
 		return
 	}
+
+	err = os.Remove(playlistFile)
+		if err != nil {
+			fmt.Println("error deleting file " + playlistFile, err)
+			log.Fatal("error deleting file " + playlistFile, err)
+
+		}
+
 }
 
 func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
