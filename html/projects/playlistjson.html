@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>save your spotify playlist to json</title>
-    <link rel="stylesheet" href="/css/playlist-json.css"> 
+    <link rel="stylesheet" href="/css/playlist-json.css">
+   <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/general.css">
+</head>
    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
-      <script>
+  <script>
+        loadind = document.getElementById("loading");
+
         function waiting() {
  document.getElementById("loadingMessage").style.display = "flex";
-loading()
 
-                           }
+     loadings()
+}
  function sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
                     }
@@ -21,27 +25,18 @@ loading()
     return document.getElementById(id) !== null;
                                 }
 
-async func loadings() {
-loadind = document.getElementById("loading");
+async function loadings() {
 while (true) {
- if (elementExistsById("loading")) {
- loadind.innerHTML = "loading.";
- 		await sleep(1000);
-loadind.innerHTML = "loading.";
+ if (elementExistsById("token")) {
 		await sleep(1000);
-loadind.innerHTML = "loading..";
-		await sleep(1000);
+        } else {
+         document.getElementById("loadingMessage").style.display = "none";
 
-loadind.innerHTML = "loading...";
-		await sleep(1000);
-
-} else {
-loadind.innerHTML = "";
     break
        }
             }
                     }
-    </script>
+    </script>-->
     <style>
        #loadingMessage {
             display: none;
@@ -78,12 +73,12 @@ loadind.innerHTML = "";
 </style>
 </head>
 <body>
-    <form  hx-post="/submit-playlist-json"  hx-on="htmx:responseError:errorMessage">
+    <form class="container" hx-post="/submit-playlist-json"  hx-on="htmx:responseError:errorMessage">
         <label for="token">Enter your token here.</label>
         <input type="token" id="token" name="token" required placeholder="Enter your token"><br><br>
-       
-        <label for="verbose">enable verbosity?</label>
-        <input type="checkbox" id="verbosity" name="verbosity" value="1">
+
+     <!--   <label for="verbose">enable verbosity?</label>
+       <input type="checkbox" id="verbosity" name="verbosity" value="1"> -->
         <br>
         <input type="submit" value="Submit" onClick="waiting()">
     </form>
@@ -91,8 +86,9 @@ loadind.innerHTML = "";
     <div id="verbose-placeholder"></div>
     <div id="loadingMessage">
     <div class="spinner"></div>
-    <div class="warning-message">Warning: Don't leave this page</div>
-    <div id="loading">loading</div>
+    <div class="warning-message">Warning: Don't leave this page, or you will have to re-start the process</div><br>
+    <br>
+   <!--  <h3 id="loading">loading</h3> -->
     </div>
     <script>
 
