@@ -1,54 +1,83 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Me</title>
-    <link rel="stylesheet" href="/css/contact.css">
-    <link rel="stylesheet" href="/css/general.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Contact Me</title>
+        <link rel="stylesheet" href="/css/contact.css" />
+        <link rel="stylesheet" href="/css/general.css" />
 
- <script src="https://unpkg.com/htmx.org@2.0.3">
+        <script src="https://unpkg.com/htmx.org@2.0.3">
 
-        function errorMessage() {
-            const errorDiv = document.getElementById("errorMessage");
+            function errorMessage() {
+                const errorDiv = document.getElementById("errorMessage");
 
-                errorDiv.innerText = `Error: ${email} isn't a valid email!`;
-                errorDiv.style.color = 'red';
-                   }
-    </script>
-  </head>
-<body>
-<div class="center-flex">
-    <div id="toReplace" >
-        <h2>Contact Me</h2>
-        <form  hx-post="/submit" hx-target="#toReplace" hx-on="htmx:responseError:errorMessage">
-            <label for="email">Email:</label>
-            <br>
-            <input type="email" id="email" name="email" required placeholder="Enter your email">
-            <br><br>
+                    errorDiv.innerText = `Error: ${email} isn't a valid email!`;
+                    errorDiv.style.color = 'red';
+                       }
+        </script>
+    </head>
+    <body>
+        <div class="center-flex">
+            <div id="toReplace">
+                <h2>Contact Me</h2>
+                <form
+                    hx-post="/submit"
+                    hx-target="#toReplace"
+                    hx-on="htmx:responseError:errorMessage"
+                >
+                    <label for="email">Email:</label>
+                    <br />
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        placeholder="Enter your email"
+                    />
+                    <br /><br />
 
-            <label for="message">Message:</label>
-            <br>
-            <textarea id="message" name="message" rows="4" cols="50" required placeholder="Type your message here..."></textarea>
+                    <label for="message">Message:</label>
+                    <br />
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="4"
+                        cols="50"
+                        required
+                        placeholder="Type your message here..."
+                    ></textarea>
 
-            <input type="submit" value="Submit">
-        </form>
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+            <div>
+                <h5>
+                    You can also contact me on my email:<a
+                        href="mailto:polyface@tutamail.com"
+                        >polyface@tutamail.com</a
+                    >
+                </h5>
+                <h5>
+                    or on simplex (private messaging app):<a
+                        href="https://simplex.chat/contact#/?v=2-7&smp=smp%3A%2F%2Fh--vW7ZSkXPeOUpfxlFGgauQmXNFOzGoizak7Ult7cw%3D%40smp15.simplex.im%2F-VHhcfG4alpMIYVoWgL2kc3dsFf7IQNE%23%2F%3Fv%3D1-3%26dh%3DMCowBQYDK2VuAyEAwYBZWNfun2VHEqHWQ_GV4p41VkhZiuodVdTjgg2GxyA%253D%26srv%3Doauu4bgijybyhczbnxtlggo6hiubahmeutaqineuyy23aojpih3dajad.onion"
+                        >link</a
+                    >
+                </h5>
+            </div>
+            <div id="errorMessage"></div>
         </div>
-         <div>
-    <h5>You can also contact me on my email:<a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></h5>
-    <h5>or on simplex (private messaging app):<a href="https://simplex.chat/contact#/?v=2-7&smp=smp%3A%2F%2Fh--vW7ZSkXPeOUpfxlFGgauQmXNFOzGoizak7Ult7cw%3D%40smp15.simplex.im%2F-VHhcfG4alpMIYVoWgL2kc3dsFf7IQNE%23%2F%3Fv%3D1-3%26dh%3DMCowBQYDK2VuAyEAwYBZWNfun2VHEqHWQ_GV4p41VkhZiuodVdTjgg2GxyA%253D%26srv%3Doauu4bgijybyhczbnxtlggo6hiubahmeutaqineuyy23aojpih3dajad.onion">link</a></h5>
-       </div>
-         <div id="errorMessage"></div>
 
-    </div>
+        <a href="/" class="goBackIndex" role="button" color="white"
+            >go back to index</a
+        >
 
-       <a href="/" class="goBackIndex" role="button">go back to index</a>
-
-       <footer>
+        <footer>
             <p>Author: me :3</p>
-            <p><a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></p>
+            <p>
+                <a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a>
+            </p>
             <p>&copy; Copyright polyface Corp, 2024</p>
         </footer>
-</body>
+    </body>
 </html>
