@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/general.css">
 </head>
    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+   <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
   <script>
         loadind = document.getElementById("loading");
 
@@ -36,7 +37,7 @@ while (true) {
        }
             }
                     }
-    </script>-->
+    </script>
     <style>
        #loadingMessage {
             display: none;
@@ -77,28 +78,19 @@ while (true) {
         <label for="token">Enter your token here.</label>
         <input type="token" id="token" name="token" required placeholder="Enter your token"><br><br>
 
-     <!--   <label for="verbose">enable verbosity?</label>
-       <input type="checkbox" id="verbosity" name="verbosity" value="1"> -->
+
         <br>
         <input type="submit" value="Submit" onClick="waiting()">
     </form>
 
-    <div id="verbose-placeholder"></div>
-    <div id="loadingMessage">
-    <div class="spinner"></div>
+    <div id="verbose-placeholder"></div><br>
+    <div id="loadingMessage"><br>
+    <div class="spinner"></div><br>
     <div class="warning-message">Warning: Don't leave this page, or you will have to re-start the process</div><br>
     <br>
    <!--  <h3 id="loading">loading</h3> -->
     </div>
     <script>
-
-     /* const ws = new WebSocket('ws://localhost:3000');
-  ws.onmessage = (event) => {
-  const message = JSON.parse(event.data);
-    document.getElementById("verbose-placeholder").innerHTML = "message"
-};
-
-//ws.send('Hello from the client!'); */
 
     </script>
   </body>

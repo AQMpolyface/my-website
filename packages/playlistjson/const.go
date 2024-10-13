@@ -10,7 +10,6 @@ type Playlist struct {
 	Name string `json:"name"`
 	Id   string `json:"id"`
 }
-
 type PlaylistInfo struct {
 	Items []Playlist `json:"items"`
 }

@@ -6,20 +6,15 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"strconv"
-
-	//"os/exec"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
-
-	//"time"
 	"website/packages/playlistjson"
 )
 
 const visits string = "visits.txt"
 
-// var playlistFile string
 var fileNames string
 var playlistFile string
 
@@ -31,8 +26,6 @@ func main() {
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/projects", projectsHandler)
 	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
-	//	http.HandleFunc("/projects/temp/tempfile", tempFileHandler)
-	//http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)
 	http.HandleFunc("/submit-playlist-json", playlistjsonHandlerPost)
 	http.HandleFunc("/submit", formHandler)
 	http.HandleFunc("/uwu", uwuHandler)
@@ -44,14 +37,8 @@ func main() {
 }
 
 func serveFileHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("starting serveFileHandler")
 	filename2 := r.URL.Path[len("/projects/temp/"):]
-	//filename := playlistFile["filename"]
-	//fileMap{filename} = filename
-
-	//	http.ServeFile(w, r, filename)
 	osOpenFile := "projects/" + playlistFile
-	//fmt.Println("filetopopen:", osOpenFile)
 	filejsonData, err := os.ReadFile(osOpenFile)
 	if err != nil {
 		fmt.Printf("error readinf %s: %s", filename2, err)
@@ -71,15 +58,12 @@ func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprint(w, string(filejsonData))
-	//	fmt.Println(string(filejsonData))
-	//fmt.Println(filename2)
-
 	// remove the file after download
 	defer os.Remove(osOpenFile)
 }
 
 func uwuHandler(w http.ResponseWriter, r *http.Request) {
-
+	//read uwu.html
 	uwuData, err := os.ReadFile("html/uwu.html")
 	if err != nil {
 		fmt.Println("reading uwu.html", err)
@@ -91,6 +75,7 @@ func uwuHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("reading uwu.txt", err)
 		http.Error(w, "Error reading uwu.txt", http.StatusInternalServerError)
 	}
+	//convert number of visits on /uwu to string
 	numberOfUwu, err := strconv.Atoi(string(uwunumber))
 	if err != nil {
 		fmt.Println("reading uwu.txt", err)
@@ -98,47 +83,13 @@ func uwuHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	numberOfUwu++
 	fmt.Println(numberOfUwu)
+	//tracking number of person who pressed on the yes button on the index page
 	os.WriteFile("uwunumber.txt", []byte(fmt.Sprintf("%d", numberOfUwu)), 0644)
 
 	fmt.Fprint(w, string(uwuData))
 }
 
-/*func tempFileHandler(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Println(playlistFile)
-	fmt.Println(fileNames)
-
-	fileData, err := os.ReadFile(playlistFile)
-	if err != nil {
-		fmt.Println("error reading file", err)
-		http.Error(w, "Error reading file", http.StatusInternalServerError)
-		return
-	}
-
-	// Set the appropriate headers to force a download
-	w.Header().Set("Content-Disposition", "attachment; filename="+fileNames)
-	w.Header().Set("Content-Type", "application/octet-stream")
-	w.Header().Set("Content-Length", strconv.Itoa(len(fileData)))
-
-	// Write the file content to the response
-	_, err = w.Write(fileData)
-	if err != nil {
-		fmt.Println("error writing response", err)
-		http.Error(w, "Error writing response", http.StatusInternalServerError)
-		return
-	}
-
-	err = os.Remove(playlistFile)
-	if err != nil {
-		fmt.Println("error deleting file "+playlistFile, err)
-		log.Fatal("error deleting file "+playlistFile, err)
-
-	}
-
-}*/
-
 func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
-
 	//allowed Header
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
@@ -159,7 +110,7 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer r.Body.Close()
-
+	// get the token
 	decodedMessage, err := url.QueryUnescape(string(body))
 	if err != nil {
 		fmt.Println("decoding message", err)
@@ -177,15 +128,10 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := values.Get("token")
+	//call a function from packages/playlistjson that returns the exact url and just the filename
 	playlistFile, fileNames = playlistjson.PlaylistJson(w, r, token)
 	fmt.Println("playlistfile at the end of playlistjsonpost:", playlistFile)
-	/*verbose := values.Get("verbose")
-	if verbose != "" {
-		playlistjson.PlaylistJsonSocket(w, r, token)
 
-	} else {
-		playlistjson.PlaylistJson(w, r, token)
-	}*/
 }
 
 func playlistjsonHandler(w http.ResponseWriter, r *http.Request) {
@@ -200,6 +146,7 @@ func playlistjsonHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
+	//serve the contact page
 	contactData, err := os.ReadFile("html/contact.html")
 	if err != nil {
 		fmt.Println("error reading contact.html", err)
@@ -220,6 +167,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
 		fmt.Fprintln(w, "I'm a teapot!")
+		return
 	}
 
 	if r.Method == http.MethodPost {
@@ -230,7 +178,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer r.Body.Close()
-
+		//decode the message to write it to messages.txt
 		decodedMessage, err := url.QueryUnescape(string(body))
 		if err != nil {
 			fmt.Println("error decoding message", err)
@@ -245,7 +193,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error parsing query string", http.StatusInternalServerError)
 			return
 		}
-		//regex to check if its an email, idk if it works xd
+		//regex to check if its an email, no clue if it works
 		emailRegex := `(?:[a-z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\$$\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)$$)`
 		emailTrue, err := regexp.MatchString(emailRegex, values.Get("email"))
 		if err != nil {
@@ -259,6 +207,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		//write the message and the email
 		messageFileHandler, err := os.OpenFile("messages.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 		if err != nil {
 			log.Fatal("error opening message file:", err)
@@ -318,7 +267,7 @@ func privacyPolicyHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func blahajHandler(w http.ResponseWriter, r *http.Request) {
-
+	//super duper secret page
 	blahajData, err := os.ReadFile("html/blahaj.html")
 	if err != nil {
 		fmt.Println("error reading blahaj.html", err)
