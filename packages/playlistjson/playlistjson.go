@@ -125,18 +125,25 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 			return "", ""
 
 		}
+		break
 	}
-	data2, err := os.ReadFile(playlistFile)
+	/*data2, err := os.ReadFile(playlistFile)
 	if err != nil {
 		fmt.Println("error uwu")
 		return "", ""
 	}
-	fmt.Println(string(data2))
+	fmt.Println(string(data2)) */
 	fmt.Println("link is equal to ", link)
-	responseMessage := `<h4> You can download your json file <a href="temp/tempfile">here</a></h5>
-		<h5 style="color:red;">Warning: the file will be deleted after downloading it, you will have to redo the process if you lose the file</h5>`
+	responseMessage := fmt.Sprintf(`<h4> You can download your json file <a href="%s">here</a></h5>
+		<h5 style="color:red;">Warning: the file will be deleted after downloading it, you will have to redo the process if you lose the file</h5>`, link)
 	fmt.Println("uwu world")
 	fmt.Fprint(w, responseMessage)
-	return "projects/" + link, randData
+	//filename := "projects/" + link
+	/* 	fileMap := map[string]string{
+		"filename": filename,
+		"url":      fmt.Sprintf("/files/%s", filename),
+	}*/
+
+	return link, randData
 
 }

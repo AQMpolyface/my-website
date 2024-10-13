@@ -19,8 +19,9 @@ import (
 
 const visits string = "visits.txt"
 
-var playlistFile string
+// var playlistFile string
 var fileNames string
+var playlistFile string
 
 func main() {
 	http.HandleFunc("/contact", contactHandler)
@@ -30,16 +31,53 @@ func main() {
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/projects", projectsHandler)
 	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
-	http.HandleFunc("/projects/temp/tempfile", tempFileHandler)
+	//	http.HandleFunc("/projects/temp/tempfile", tempFileHandler)
 	//http.HandleFunc("/submit-playlist-json", playlistjson.PlaylistJson)
 	http.HandleFunc("/submit-playlist-json", playlistjsonHandlerPost)
 	http.HandleFunc("/submit", formHandler)
 	http.HandleFunc("/uwu", uwuHandler)
+	http.HandleFunc("/projects/temp/", serveFileHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
+
+func serveFileHandler(w http.ResponseWriter, r *http.Request) {
+	//fmt.Println("starting serveFileHandler")
+	filename2 := r.URL.Path[len("/projects/temp/"):]
+	//filename := playlistFile["filename"]
+	//fileMap{filename} = filename
+
+	//	http.ServeFile(w, r, filename)
+	osOpenFile := "projects/" + playlistFile
+	//fmt.Println("filetopopen:", osOpenFile)
+	filejsonData, err := os.ReadFile(osOpenFile)
+	if err != nil {
+		fmt.Printf("error readinf %s: %s", filename2, err)
+		http.Error(w, "Error reading "+filename2, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Disposition", "attachment; filename="+filename2)
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Header().Set("Content-Length", strconv.Itoa(len(filejsonData)))
+
+	// Write to response
+	_, err = w.Write(filejsonData)
+	if err != nil {
+		fmt.Println("error writing response", err)
+		http.Error(w, "Error writing response", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, string(filejsonData))
+	//	fmt.Println(string(filejsonData))
+	//fmt.Println(filename2)
+
+	// remove the file after download
+	defer os.Remove(osOpenFile)
+}
+
 func uwuHandler(w http.ResponseWriter, r *http.Request) {
 
 	uwuData, err := os.ReadFile("html/uwu.html")
@@ -65,7 +103,7 @@ func uwuHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(uwuData))
 }
 
-func tempFileHandler(w http.ResponseWriter, r *http.Request) {
+/*func tempFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(playlistFile)
 	fmt.Println(fileNames)
@@ -97,7 +135,7 @@ func tempFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-}
+}*/
 
 func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 
@@ -140,6 +178,7 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 
 	token := values.Get("token")
 	playlistFile, fileNames = playlistjson.PlaylistJson(w, r, token)
+	fmt.Println("playlistfile at the end of playlistjsonpost:", playlistFile)
 	/*verbose := values.Get("verbose")
 	if verbose != "" {
 		playlistjson.PlaylistJsonSocket(w, r, token)
