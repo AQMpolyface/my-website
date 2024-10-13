@@ -24,8 +24,17 @@ header h1 {
     color: #007bff;
 }
 
+h1 {
+    text-align: center;
+    /* border: solid;
+   border-radius: 5em;*/
+    border-color: blueviolet;
+    background-color: black;
+    color: azure;
+}
 section {
     margin-bottom: 20px;
+    margin-left: 1%;
 }
 
 section h2 {
