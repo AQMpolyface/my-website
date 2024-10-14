@@ -1,33 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100% of People Love Your Website</title>
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/general.css">
-</head>
-<body>
-    <div class="container">
-        <h1>100% of People Love My Website!</h1>
-        <p>According to our latest survey, 100% of people who have visited my website absolutely love it!</p>
-        <h3>Proof: you pressed on the yes button on the index page!</h3>
-        <div class="survey-results">
-            <div class="survey-item">
-                <h3>% of people who loved the Website</h3>
-                <p>100%</p>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>100% of People Love Your Website</title>
+        <link rel="stylesheet" href="/css/index.css" />
+        <link rel="stylesheet" href="/css/general.css" />
+    </head>
+    <script>
+        async function getUwu() {
+            try {
+                response = await fetch("/uwunumber");
+                if (!response.ok) {
+                    throw new Error("error getting uwuw number");
+                }
+            } catch (error) {
+                console.log("error getting uwunumber");
+            }
+            let data = await response.text();
+            document.getElementbyId("number").innerText = data;
+        }
+
+        getuwu();
+    </script>
+    <body>
+        <div class="container">
+            <h1>100% of People Love My Website!</h1>
+            <p>
+                According to our latest survey, 100% of people who have visited
+                my website absolutely love it!
+            </p>
+            <h3>Proof: you pressed on the yes button on the index page!</h3>
+            <div class="survey-results">
+                <div class="survey-item">
+                    <h3>% of people who loved the Website</h3>
+                    <p>100%</p>
+                    <h3>
+                        total number of people who pressed on the yes button:
+                        <span id="number">0</span>
+                    </h3>
+                </div>
+                <div class="survey-item">
+                    <h3>% of people who disliked the Website:</h3>
+                    <p>0%</p>
+                    <h3>
+                        total number of people who pressed on the no button:
+                        <span>0</span>
+                    </h3>
+                </div>
             </div>
-            <div class="survey-item">
-                <h3>% of people who disliked the Website:</h3>
-                <p>0%</p>
-            </div>
+            <p>My website is a huge hit with everyone who visits.</p>
         </div>
-        <p>My website is a huge hit with everyone who visits.</p>
-    </div>
-    <footer>
-        <p>Author: me :3</p>
-        <p><a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></p>
-        <p>&copy; Copyright polyface Corp, 2024</p>
-    </footer>
-</body>
+        <footer>
+            <p>Author: me :3</p>
+            <p>
+                <a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a>
+            </p>
+            <p>&copy; Copyright polyface Corp, 2024</p>
+        </footer>
+    </body>
 </html>

@@ -29,6 +29,7 @@ func main() {
 	http.HandleFunc("/submit-playlist-json", playlistjsonHandlerPost)
 	http.HandleFunc("/submit", formHandler)
 	http.HandleFunc("/uwu", uwuHandler)
+	http.HandleFunc("/uwunumber", uwuNumberHandler)
 	http.HandleFunc("/projects/temp/", serveFileHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
@@ -60,6 +61,16 @@ func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(filejsonData))
 	// remove the file after download
 	defer os.Remove(osOpenFile)
+}
+
+func uwuNumberHandler(w http.ResponseWriter, r *http.Request) {
+	uwuNumberData, err := os.ReadFile("uwunumber.txt")
+	if err != nil {
+		fmt.Println("reading uwu number", err)
+		http.Error(w, "Error reading uwu number", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprint(w, string(uwuNumberData))
 }
 
 func uwuHandler(w http.ResponseWriter, r *http.Request) {
