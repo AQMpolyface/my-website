@@ -63,7 +63,7 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 
 	}
 	randData := strconv.FormatInt(time.Now().UnixNano(), 10) + ".json"
-	link := "temp/" + randData
+	link := "projects/temp/" + randData
 	//	playlistFile := "projects/" + link
 
 	client = &http.Client{}
