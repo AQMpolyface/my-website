@@ -64,27 +64,40 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 	}
 	randData := strconv.FormatInt(time.Now().UnixNano(), 10) + ".json"
 	link := "temp/" + randData
-	playlistFile := "projects/" + link
+	//	playlistFile := "projects/" + link
 
 	client = &http.Client{}
-	for _, playlist := range data.Items {
-		fmt.Printf("Playlist Name: %s, ID: %s\n", playlist.Name, playlist.Id)
+	playlistFile2, err := os.OpenFile("playlist.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		log.Fatalf("Failed to open file: %v", err)
+	}
+	defer playlistFile2.Close()
+	startPlaylist := `{`
+	if _, err := playlistFile2.WriteString(startPlaylist + "\n"); err != nil {
+		log.Fatalf("Failed to write to file: %v", err)
+	}
 
+	for _, playlist := range data.Items {
+		//	debugging	fmt.Printf("Playlist Name: %s, ID: %s\n", playlist.Name, playlist.Id)
+
+		playlistName := fmt.Sprintf(`"playlistname" : "%s",
+    "playlistis" : "%s",
+    "items" [`, playlist.Name, playlist.Id)
+		if _, err := playlistFile2.WriteString(playlistName + "\n"); err != nil {
+			log.Fatalf("Failed to write to file: %v", err)
+		}
 		fields := "items.track(name,id)"
 		url := fmt.Sprintf("https://api.spotify.com/v1/playlists/%s/tracks?fields=%s", playlist.Id, fields)
 		playlistReq, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			log.Fatal(err)
-			return "", ""
-
 		}
 		playlistReq.Header.Set("Authorization", "Bearer "+token)
+		//playlistReq.Header.Set("User-Agent", "curl/7.64.1") silly attempt 4
 		client := &http.Client{}
 		playlistResp, err := client.Do(playlistReq)
 		if err != nil {
 			log.Fatal(err)
-			return "", ""
-
 		}
 		defer playlistResp.Body.Close()
 
@@ -92,7 +105,6 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 		if err != nil {
 			fmt.Println("error reading body", err)
 			return "", ""
-
 		}
 
 		var musicData PlaylistResponse
@@ -100,32 +112,26 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 		if err != nil {
 			fmt.Println("error unmarshaling playlist content:", err)
 			return "", ""
-
 		}
 
-		fileWriter, err := os.OpenFile(playlistFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
-		if err != nil {
-			log.Fatal("error opening playlist.json file:", err)
-			fmt.Println("uwu")
-			return "", ""
-
-		}
-		defer fileWriter.Close()
-
-		jsonData, err := json.MarshalIndent(musicData, "", "  ")
-		if err != nil {
-			log.Fatal("error marshaling data to JSON:", err)
-			return "", ""
-
+		for _, item := range musicData.Items {
+			//			time.Sleep(time.Second * 1) debugging 5
+			fmt.Println(item.Track.Name)
+			fmt.Println(item.Track.ID)
+			songName := fmt.Sprintf(` {
+  "song" : "%s",
+  "id" : "%s"
+        }`, item.Track.Name, item.Track.ID)
+			if _, err := playlistFile2.WriteString(songName + "\n"); err != nil {
+				log.Fatalf("Failed to write to file: %v", err)
+			}
 		}
 
-		_, err = fileWriter.Write(jsonData)
-		if err != nil {
-			log.Fatal("error writing to the .json file:", err)
-			return "", ""
-
+		endSong := `]`
+		if _, err := playlistFile2.WriteString(endSong + "\n"); err != nil {
+			log.Fatalf("Failed to write to file: %v", err)
 		}
-		break
+
 	}
 	/*data2, err := os.ReadFile(playlistFile)
 	if err != nil {
