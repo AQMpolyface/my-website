@@ -63,11 +63,12 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 
 	}
 	randData := strconv.FormatInt(time.Now().UnixNano(), 10) + ".json"
-	link := "projects/temp/" + randData
+	link := "temp/" + randData
 	//	playlistFile := "projects/" + link
 
+	fmt.Println("link is equal to", link)
 	client = &http.Client{}
-	playlistFile2, err := os.OpenFile("playlist.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	playlistFile2, err := os.OpenFile("temp/"+randData, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatalf("Failed to open file: %v", err)
 	}
@@ -116,8 +117,8 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 
 		for _, item := range musicData.Items {
 			//			time.Sleep(time.Second * 1) debugging 5
-			fmt.Println(item.Track.Name)
-			fmt.Println(item.Track.ID)
+			//	fmt.Println(item.Track.Name) playlistFile
+			//	fmt.Println(item.Track.ID)
 			songName := fmt.Sprintf(` {
   "song" : "%s",
   "id" : "%s"
@@ -131,7 +132,7 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 		if _, err := playlistFile2.WriteString(endSong + "\n"); err != nil {
 			log.Fatalf("Failed to write to file: %v", err)
 		}
-
+		break
 	}
 	/*data2, err := os.ReadFile(playlistFile)
 	if err != nil {

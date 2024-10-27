@@ -39,8 +39,11 @@ func main() {
 
 func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	filename2 := r.URL.Path[len("/projects/temp/"):]
-	osOpenFile := "projects/" + playlistFile
+  fmt.Println("filename2 = ", filename2)
+  fmt.Println("playlistFile = ", playlistFile)
+	osOpenFile :=  playlistFile
 	filejsonData, err := os.ReadFile(osOpenFile)
+  fmt.Println("filejsonData = ", string(filejsonData))
 	if err != nil {
 		fmt.Printf("error readinf %s: %s", filename2, err)
 		http.Error(w, "Error reading "+filename2, http.StatusInternalServerError)
@@ -59,7 +62,7 @@ func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprint(w, string(filejsonData))
-	// remove the file after download
+  // remove the file after download :3
 	defer os.Remove(osOpenFile)
 }
 
