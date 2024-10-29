@@ -20,9 +20,16 @@ var playlistFile string
 
 func main() {
 	http.HandleFunc("/contact", contactHandler)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			notFoundHandler(w, r)
+		} else {
+			indexHandler(w, r)
+		}
+	})
 	http.HandleFunc("/privacy_policy", privacyPolicyHandler)
 	http.HandleFunc("/blahaj", blahajHandler)
-	http.HandleFunc("/", indexHandler)
+	//http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/projects", projectsHandler)
 	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
@@ -39,11 +46,11 @@ func main() {
 
 func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	filename2 := r.URL.Path[len("/projects/temp/"):]
-  fmt.Println("filename2 = ", filename2)
-  fmt.Println("playlistFile = ", playlistFile)
-	osOpenFile :=  playlistFile
+	fmt.Println("filename2 = ", filename2)
+	fmt.Println("playlistFile = ", playlistFile)
+	osOpenFile := playlistFile
 	filejsonData, err := os.ReadFile(osOpenFile)
-  fmt.Println("filejsonData = ", string(filejsonData))
+	fmt.Println("filejsonData = ", string(filejsonData))
 	if err != nil {
 		fmt.Printf("error readinf %s: %s", filename2, err)
 		http.Error(w, "Error reading "+filename2, http.StatusInternalServerError)
@@ -62,7 +69,7 @@ func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprint(w, string(filejsonData))
-  // remove the file after download :3
+	// remove the file after download :3
 	defer os.Remove(osOpenFile)
 }
 
@@ -256,10 +263,8 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 		let formattedDate = formatter.format(date);
 		timeNow.innerHTML = formattedDate;
 		await sleep(1000);
-
 	}
-
-	}
+}
 
 	time()
 	</script>
@@ -302,6 +307,16 @@ func projectsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(projectsData))
 }
 
+func notFoundHandler(w http.ResponseWriter, r *http.Request) {
+	notFoundData, err := os.ReadFile("html/404.html")
+	if err != nil {
+		fmt.Println("error reading 404.html", err)
+		http.Error(w, "Error reading 404.html", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusNotFound)
+	w.Write(notFoundData)
+}
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	//indedx page
 	indexData, err := os.ReadFile("html/index.html")
@@ -310,6 +325,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error reading index.html", http.StatusInternalServerError)
 		return
 	}
+
 	visitsFile, err := os.Open(visits)
 	if err != nil {
 		log.Fatal("error opening message visits.txt:", err)
