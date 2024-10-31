@@ -38,6 +38,7 @@ func main() {
 	http.HandleFunc("/uwu", uwuHandler)
 	http.HandleFunc("/uwunumber", uwuNumberHandler)
 	http.HandleFunc("/projects/temp/", serveFileHandler)
+	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	fmt.Println("Server started at :8008")
