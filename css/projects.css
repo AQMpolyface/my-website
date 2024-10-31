@@ -1,61 +1,96 @@
-/*
-body, h1, h5, p {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* Project Container Styles */
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
-    padding: 20px;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(
+        to bottom,
+        #8c00ff,
+        /* Blue-purple */ #000000 /* Black */
+    ); /* Gradient from blue-purple to black */
 }
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #2c3e50;
-}
-*/
 .projectContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 800px;
     margin: 0 auto;
+    padding: 20px;
 }
 
 .projectContainer div {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin: 10px 0;
+    background: #25274d; /* Dark purple-blue background */
+    border: 1px solid #353866; /* Subtle border to match theme */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
     width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+    transition:
+        transform 0.2s,
+        box-shadow 0.3s;
+    color: #e0e0e0; /* Light text color */
 }
 
 .projectContainer div:hover {
-    transform: scale(1.02);
+    transform: scale(1.03);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
 }
 
 .projectContainer h5 {
-    color: #2980b9;
-    margin-bottom: 10px;
+    color: #7a4cff; /* Bright purple */
+    margin-bottom: 12px;
+    font-size: 1.3em;
 }
 
 .projectContainer p {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    color: #d3d3f2; /* Lighter purple-blue for paragraph text */
+    line-height: 1.6;
 }
 
 .projectContainer a {
-    color: #e74c3c;
+    color: #00bfff; /* Bright blue for links */
     text-decoration: none;
+    font-weight: bold;
+    transition:
+        color 0.3s,
+        text-decoration 0.3s;
 }
 
 .projectContainer a:hover {
     text-decoration: underline;
+    color: #ffcc00; /* Gold color on hover */
+}
+
+/* Go Back Button Styling */
+.goBackIndex {
+    display: inline-block;
+    background-color: #8c00ff; /* Blue-purple */
+    color: #ffffff;
+    padding: 10px 20px;
+    margin-top: 20px;
+    text-decoration: none;
+    border: 2px solid #8c00ff;
+    border-radius: 5px;
+    transition:
+        background-color 0.3s,
+        color 0.3s,
+        transform 0.3s;
+}
+
+.goBackIndex:hover {
+    background-color: #5e00b3; /* Darker blue-purple */
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .projectContainer {
+        padding: 10px;
+    }
+    .projectContainer div {
+        padding: 15px;
+    }
 }

@@ -1,41 +1,62 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Projects Page</title>
-    <link rel="stylesheet" href="/css/projects.css">
-    <link rel="stylesheet" href="/css/general.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>My Projects Page</title>
+        <link rel="stylesheet" href="/css/projects.css" />
+    </head>
+    <body>
+        <h1>
+            This is a list of my projects. Yes those are all small projects, and
+            some are probably still broken.
+        </h1>
 
-</head>
-<body>
-    <h1>This is a list of my projects. Yes those are all small projects, and some are probably still broken.</h1>
+        <div class="projectContainer">
+            <div class="playlist-json">
+                <h5>playlist-json.</h5>
+                <p>
+                    This project's goal was to save my Spotify playlist in JSON
+                    format, using an API token. I will probably make a tool to
+                    add them back to a playlist later.
+                </p>
+                <a
+                    href="https://github.com/AQMpolyface/save-spotify-playlist-in-json"
+                    >Click here to see</a
+                >
+                <p>
+                    or you can try it online, on my website
+                    <a href="/projects/playlistjson">click here</a>
+                </p>
+            </div>
 
-    <div class="projectContainer">
-        <div class="playlist-json">
-            <h5>playlist-json.</h5>
-            <p>This project's goal was to save my Spotify playlist in JSON format, using an API token. I will probably make a tool to add them back to a playlist later.</p>
-            <a href="https://github.com/AQMpolyface/save-spotify-playlist-in-json">Click here to see</a>
-            <p>or you can try  it online, on my website <a href="/projects/playlistjson">click here</a></p>
+            <div class="polybuster">
+                <h5>polybuster</h5>
+                <p>
+                    I tried to re-make
+                    <a href="https://github.com/OJ/gobuster">gobuster</a>, but
+                    mine can only do HTTP requests, so really basic.
+                </p>
+                <a href="https://github.com/AQMpolyface/polybuster"
+                    >click here to see</a
+                >
+            </div>
+            <div class="website">
+                <h5>my website</h5>
+                <p>
+                    this website is open source. This is a project i made for
+                    fun
+                </p>
+                <a href="https://github.com/AQMpolyface/my-go-website"
+                    >click here to see</a
+                >
+            </div>
         </div>
-
-        <div class="polybuster">
-            <h5>polybuster</h5>
-            <p>I tried to re-make <a href="https://github.com/OJ/gobuster">gobuster</a>, but mine can only do HTTP requests, so really basic.</p> 
-        <a href="https://github.com/AQMpolyface/polybuster">click here to see</a>    
-      </div>
-      <div class="website">
-        <h5>my website</h5>
-        <p>this website is open source. This is a project i made for fun</p> 
-    <a href="https://github.com/AQMpolyface/my-go-website">click here to see</a>    
-  </div>
-    </div>
-<a href="/" class="goBackIndex" role="button">go back to index</a>  
-     <!--   <footer>
+        <a href="/" class="goBackIndex" role="button">go back to index</a>
+        <!--   <footer>
       <p>Author: me :3</p>
       <p><a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></p>
       <p>&copy; Copyright polyface Corp, 2024</p>
   </footer> -->
-  </body>
+    </body>
 </html>

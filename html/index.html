@@ -1,73 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Page</title>
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/general.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to My Website!</h1>
-        <p>Thank you for visiting.</p>
-        <p><a href="/about" class="link" role="button">Learn more about me</a></p>
-        <p><a href="/projects" class="link" role="button">See my projects</a></p>
-        <p><a href="/contact"  class="link" role="button">Contact me!</a></p>
-        <p><a href="/privacy_policy" class="link" role="button">privacy policy</a></p>
-    </div>
-    <div class="container" id="trollcontainer">
-    <h5>do you like my website?</h5>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Welcome Page</title>
+        <link rel="stylesheet" href="/css/index.css" />
+        <link rel="stylesheet" href="/css/general.css" />
+        <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Welcome to My Website!</h1>
+            <p>Thank you for visiting.</p>
+            <p>
+                <a href="/about" class="link" role="button"
+                    >Learn more about me</a
+                >
+            </p>
+            <p>
+                <a href="/projects" class="link" role="button"
+                    >See my projects</a
+                >
+            </p>
+            <p><a href="/contact" class="link" role="button">Contact me!</a></p>
+            <p>
+                <a href="/privacy_policy" class="link" role="button"
+                    >privacy policy</a
+                >
+            </p>
+        </div>
+        <div class="container" id="trollcontainer">
+            <h5 style="color: white">do you like my website?</h5>
 
-    <button id="yes" onClick="onYes()" class="trollButton" style="background-color:#4CAF50;">yes</button>
-    <button id="no" class="trollButton" style="background-color:#f44336ed;">no</button>
+            <button
+                id="yes"
+                onClick="onYes()"
+                class="trollButton"
+                style="background-color: #4caf50"
+            >
+                yes
+            </button>
+            <button
+                id="no"
+                class="trollButton"
+                style="background-color: #f44336ed"
+            >
+                no
+            </button>
+        </div>
+        <script>
+            const yesbutton = document.getElementById("yes");
+            const nobutton = document.getElementById("no");
+            nobutton.addEventListener("mouseenter", () => {
+                yesbutton.innerHTML = "no";
+                yesbutton.setAttribute("style", "background-color: #f44336ed;");
+                yesbutton.removeAttribute("onClick");
 
-    </div>
-    <script>
-    const yesbutton = document.getElementById("yes");
-    const nobutton = document.getElementById("no");
-   nobutton.addEventListener('mouseenter', () => {
+                nobutton.innerHTML = "yes";
+                nobutton.setAttribute("onClick", "onYes()");
+                nobutton.setAttribute("style", "background-color: #4CAF50;");
 
+                console.log("uwu enter");
+            });
 
-    yesbutton.innerHTML = "no";
-    yesbutton.setAttribute("style", "background-color: #f44336ed;");
-    yesbutton.removeAttribute("onClick");
+            nobutton.addEventListener("mouseleave", () => {
+                yesbutton.innerHTML = "yes";
+                yesbutton.setAttribute("onClick", "onYes()");
+                yesbutton.setAttribute("style", "background-color: #4CAF50;");
 
-    nobutton.innerHTML = "yes";
-    nobutton.setAttribute("onClick", "onYes()");
-    nobutton.setAttribute("style", "background-color: #4CAF50;");
+                nobutton.innerHTML = "no";
+                nobutton.setAttribute("style", "background-color: #f44336;");
+                nobutton.removeAttribute("onClick");
 
-  console.log("uwu enter");
+                console.log("uwu leave");
+            });
 
-});
-
-nobutton.addEventListener('mouseleave', () => {
-
-    yesbutton.innerHTML = "yes";
-    yesbutton.setAttribute("onClick", "onYes()");
-    yesbutton.setAttribute("style", "background-color: #4CAF50;");
-
-    nobutton.innerHTML = "no";
-    nobutton.setAttribute("style", "background-color: #f44336;");
-    nobutton.removeAttribute("onClick");
-
-
-  console.log("uwu leave");
-});
-
- /* yesButton.addEventListener("click", () => {
+            /* yesButton.addEventListener("click", () => {
         alert("You pressed the Yes button!");
         // You can add more functionality here
     });*/
 
-    function onYes() {
-window.location.assign("/uwu");
-}
-    </script>
-    <footer>
-        <p>Author: me :3</p>
-        <p><a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></p>
-        <p>&copy; Copyright polyface Corp, 2024</p>
-    </footer> 
-</body>
+            function onYes() {
+                window.location.assign("/uwu");
+            }
+        </script>
+        <footer>
+            <p>Author: me :3</p>
+            <p>
+                <a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a>
+            </p>
+            <p>&copy; Copyright polyface Corp, 2024</p>
+        </footer>
+    </body>
 </html>
