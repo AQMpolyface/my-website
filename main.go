@@ -19,32 +19,117 @@ var fileNames string
 var playlistFile string
 
 func main() {
-	http.HandleFunc("/contact", contactHandler)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" {
-			notFoundHandler(w, r)
-		} else {
-			indexHandler(w, r)
-		}
-	})
-	http.HandleFunc("/privacy_policy", privacyPolicyHandler)
-	http.HandleFunc("/blahaj", blahajHandler)
-	//http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/about", aboutHandler)
-	http.HandleFunc("/projects", projectsHandler)
-	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
-	http.HandleFunc("/submit-playlist-json", playlistjsonHandlerPost)
-	http.HandleFunc("/submit", formHandler)
-	http.HandleFunc("/uwu", uwuHandler)
-	http.HandleFunc("/uwunumber", uwuNumberHandler)
-	http.HandleFunc("/projects/temp/", serveFileHandler)
-	http.HandleFunc("/projects/playlistjson", playlistjsonHandler)
+	http.HandleFunc("/", mainHandler)
+
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
+
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
 
+func mainHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.URL.Path {
+	case "/":
+		indexHandler(w, r)
+	case "/contact":
+		contactHandler(w, r)
+	case "/privacy_policy":
+		privacyPolicyHandler(w, r)
+	case "/blahaj":
+		blahajHandler(w, r)
+	case "/protected":
+		playlistjson.ProtectionHandler(w, r)
+	case "/about":
+		aboutHandler(w, r)
+	case "/projects":
+		projectsHandler(w, r)
+	case "/projects/playlistjson":
+		playlistjsonHandler(w, r)
+	case "/submit-playlist-json":
+		playlistjsonHandlerPost(w, r)
+	case "/submit-password":
+		passwordPost(w, r)
+	case "/submit":
+		formHandler(w, r)
+	case "/uwu":
+		uwuHandler(w, r)
+	case "/uwunumber":
+		uwuNumberHandler(w, r)
+	case "/projects/temp/":
+		serveFileHandler(w, r)
+	case "/html/video/king":
+		serveVideoHandler(w, r)
+	default:
+		notFoundHandler(w, r)
+	}
+}
+
+func passwordPost(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	//TEAPOT  nbr 2 LETS GOO :3
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusTeapot)
+		fmt.Println("teapot party")
+		w.WriteHeader(418)
+		fmt.Fprintln(w, "I'm a teapot!")
+	}
+
+	/* 	body, err := io.ReadAll(r.Body)
+	   	if err != nil {
+	   		fmt.Println("unabke to read request body")
+	   		http.Error(w, "Unable to read request body", http.StatusBadRequest)
+	   		return
+	   	}
+	   	defer r.Body.Close()
+	   	// get the password
+	   	decodedMessage, err := url.QueryUnescape(string(body))
+	   	if err != nil {
+	   		fmt.Println("decoding message", err)
+	   		http.Error(w, "decoding message", http.StatusInternalServerError)
+	   		return
+	   	}
+	   	fmt.Println(decodedMessage)
+
+	   	//Parsing values from what htmx sent (url format)
+	   	values, err := url.ParseQuery(decodedMessage)
+	   	if err != nil {
+	   		fmt.Println("parsing url values", err)
+	   		http.Error(w, "parsing url values", http.StatusInternalServerError)
+	   		return
+	   	}*/
+
+	r.ParseForm()
+	password := r.FormValue("password")
+	truePassword := os.Getenv("password")
+
+	if password != truePassword {
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte("<div class='error'>Error: Bad kitty (bad password)</div>"))
+		return
+	} else {
+		playlistjson.PasswordRight(w, r)
+	}
+
+}
+func serveVideoHandler(w http.ResponseWriter, r *http.Request) {
+	kingData, err := os.ReadFile("html/video/pickvid.html")
+	if err != nil {
+		fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
+		http.Error(w, "Error reading html/video/pickvid.html", http.StatusInternalServerError)
+		return
+	}
+	cookie, err := r.Cookie("authenticated")
+
+	if cookie != nil && cookie.Value == os.Getenv("cookie") {
+		http.Redirect(w, r, "/protected", http.StatusSeeOther)
+	} else {
+		fmt.Fprintf(w, string(kingData))
+	}
+}
 func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	filename2 := r.URL.Path[len("/projects/temp/"):]
 	fmt.Println("filename2 = ", filename2)
@@ -152,7 +237,7 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 	token := values.Get("token")
 	//call a function from packages/playlistjson that returns the exact url and just the filename
 	playlistFile, fileNames = playlistjson.PlaylistJson(w, r, token)
-	fmt.Println("playlistfile at the end of playlistjsonpost:", playlistFile)
+	// debug	fmt.Println("playlistfile at the end of playlistjsonpost:", playlistFile)
 
 }
 
