@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Password Check uwu</title>
+    </head>
+    <body>
+        <div id="lotr fellowship">
+            <video class="myVideo" controls id="video1" loop muted poster="/images/protected/the_fellowship_of_the_ring.jpg">
+                <source src="https://ffmovies.lol/movies/?imdb=tt0120737/" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+      <div id="lotr two_towers">
+          <video class="myVideo" controls id="video2" loop muted poster="/images/protected/the_two_towers.jpg">
+                <source src="https://ffmovies.lol/movies/?imdb=tt0167261/" type="video/mp4" />
+                          Your browser does not support the video tag.
+        </video>
+        <div id="lotr return">
+                  <video class="myVideo" controls id="video3" loop muted poster="/images/protected/The_Return_of_the_King_Poster_01-2655414658.jpg">
+                      <source src="https://ffmovies.lol/movies/?imdb=tt0167260/" type="video/mp4" />
+                      Your browser does not support the video tag.
+                  </video>
+        </div>
+
+        <div id="theoden edit">
+                          <video class="myVideo" controls id="video4" loop muted poster="/images/archbtw.png">
+                              <source src="images/protected/output_video.mp4" type="video/mp4" />
+                              Your browser does not support the video tag.
+                          </video>
+                </div>
+        <script>
+              function setVideoTimestamp(videoId) {
+                  const video = document.getElementById(videoId);
+                  document.cookie = `${videoId}Timestamp=` + Math.floor(video.currentTime) + "; path=/";
+              }
+
+              function setInitialTime(videoId) {
+                  const cookies = document.cookie.split('; ');
+                  const timestampCookie = cookies.find(cookie => cookie.startsWith(`${videoId}Timestamp=`));
+
+                  if (timestampCookie) {
+                      const timestamp = timestampCookie.split('=')[1];
+                      const video = document.getElementById(videoId);
+                      video.currentTime = timestamp; // Set video to last watched timestamp
+                  }
+              }
+
+              const videos = document.querySelectorAll('.myVideo');
+              videos.forEach(video => {
+                  setInitialTime(video.id);
+
+                  video.addEventListener('play', () => {
+                      setInterval(() => setVideoTimestamp(video.id), 5000); // Update every 5 seconds
+                  });
+              });
+          </script>
+    </body>
+</html>

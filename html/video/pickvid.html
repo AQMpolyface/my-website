@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Password Check uwu</title>
+        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    </head>
+    <body>
+        <div id="content">
+            <form
+                id="passwordForm"
+                hx-post="/submit-password"
+                hx-target="#content"
+                hx-swap="innerHTML"
+                hx-on="htmx:responseError: document.getElementById('Badresponse').innerHTML = event.detail.xhr.responseText; document.getElementById('Badresponse').style.display = 'block';"
+            >
+                <input
+                    type="username"
+                    name="username"
+                    required
+                    placeholder="Enter Username"
+                />
+                <input
+                    type="password"
+                    name="password"
+                    required
+                    placeholder="Enter Password"
+                />
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <div id="Badresponse" style="color: red; display: none"></div>
+    </body>
+</html>

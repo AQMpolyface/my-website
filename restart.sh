@@ -5,6 +5,10 @@ kill $(ps aux | grep go | awk '{print $2}')
 
 nginx -t
 
-rm nohup.out
+rm main
 
-nohup go run main.go & disown
+go build main.go
+
+chmod +x main
+
+nohup ./main & disown

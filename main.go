@@ -10,7 +10,10 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"website/packages/database"
 	"website/packages/playlistjson"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 const visits string = "visits.txt"
@@ -23,11 +26,33 @@ func main() {
 
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
-
+	http.HandleFunc("/protectedfiles/", serveProtectedFiles)
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
 
+func serveProtectedFiles(w http.ResponseWriter, r *http.Request) {
+
+	cookie, err := r.Cookie("authenticated")
+
+	if err != nil {
+		if err == http.ErrNoCookie {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+		// Some other error occurred
+		http.Error(w, "Error retrieving cookie", http.StatusInternalServerError)
+		return
+	}
+	// fmt.Println(cookie.Value)
+	if cookie.Value != os.Getenv("cookie") {
+		// If the cookie is missing or invalid, you can respond with an error or redirect
+		http.Redirect(w, r, "/", http.StatusSeeOther) // Redirect to a login page
+		return
+	} else {
+		http.StripPrefix("/images/protected", http.FileServer(http.Dir("images"))).ServeHTTP(w, r)
+	}
+}
 func mainHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
@@ -58,7 +83,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		uwuNumberHandler(w, r)
 	case "/projects/temp/":
 		serveFileHandler(w, r)
-	case "/html/video/king":
+	case "/auth":
 		serveVideoHandler(w, r)
 	default:
 		notFoundHandler(w, r)
@@ -78,43 +103,47 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "I'm a teapot!")
 	}
 
-	/* 	body, err := io.ReadAll(r.Body)
-	   	if err != nil {
-	   		fmt.Println("unabke to read request body")
-	   		http.Error(w, "Unable to read request body", http.StatusBadRequest)
-	   		return
-	   	}
-	   	defer r.Body.Close()
-	   	// get the password
-	   	decodedMessage, err := url.QueryUnescape(string(body))
-	   	if err != nil {
-	   		fmt.Println("decoding message", err)
-	   		http.Error(w, "decoding message", http.StatusInternalServerError)
-	   		return
-	   	}
-	   	fmt.Println(decodedMessage)
-
-	   	//Parsing values from what htmx sent (url format)
-	   	values, err := url.ParseQuery(decodedMessage)
-	   	if err != nil {
-	   		fmt.Println("parsing url values", err)
-	   		http.Error(w, "parsing url values", http.StatusInternalServerError)
-	   		return
-	   	}*/
-
 	r.ParseForm()
 	password := r.FormValue("password")
-	truePassword := os.Getenv("password")
-
-	if password != truePassword {
+	dbConn, err := database.ConnectToDB()
+	if err != nil {
+		fmt.Println("error connecting to the db", err)
+		return
+	}
+	HashedPasswd, err := database.GetUsers(dbConn)
+	fmt.Println("password:", HashedPasswd.Password)
+	fmt.Println("username:", HashedPasswd.Name)
+	if err != nil || HashedPasswd == (database.User{}) {
+		fmt.Println("error retrieving db credentials", err)
+		return
+	}
+	if HashedPasswd.Name != os.Getenv("protUsername") {
 		w.WriteHeader(http.StatusForbidden)
-		w.Write([]byte("<div class='error'>Error: Bad kitty (bad password)</div>"))
+		w.Write([]byte("<div class='error'>Error: Bad kitty </div>"))
+		return
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(HashedPasswd.Password), []byte(password))
+	if err != nil {
+		fmt.Println("Invalid password.")
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte("<div class='error'>Error: Bad kitty </div>"))
 		return
 	} else {
+		fmt.Println("Password is valid!")
 		playlistjson.PasswordRight(w, r)
 	}
-
 }
+
+//	truePassword := os.Getenv("password")
+
+/*if password != truePassword.Password {
+	w.WriteHeader(http.StatusForbidden)
+	w.Write([]byte("<div class='error'>Error: Bad kitty (bad password)</div>"))
+	return
+} else {
+	playlistjson.PasswordRight(w, r)
+}*/
+
 func serveVideoHandler(w http.ResponseWriter, r *http.Request) {
 	kingData, err := os.ReadFile("html/video/pickvid.html")
 	if err != nil {
