@@ -40,6 +40,7 @@ func ConnectToDB() (*sql.DB, error) {
 		fmt.Println("error connecting to db", err)
 		return nil, err
 	}
+	fmt.Println("done connecting")
 	return db, nil
 }
 
