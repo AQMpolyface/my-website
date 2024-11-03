@@ -145,11 +145,6 @@ func PlaylistJson(w http.ResponseWriter, r *http.Request, token string) (string,
 		<h5 style="color:red;">Warning: the file will be deleted after downloading it, you will have to redo the process if you lose the file</h5>`, link)
 	fmt.Println("uwu world")
 	fmt.Fprint(w, responseMessage)
-	//filename := "projects/" + link
-	/* 	fileMap := map[string]string{
-		"filename": filename,
-		"url":      fmt.Sprintf("/files/%s", filename),
-	}*/
 
 	return link, randData
 

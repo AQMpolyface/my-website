@@ -49,7 +49,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	if valid {
 		fmt.Println("adding user to db")
 		err = AddUser(db, username, password)
-		//fmt.Fprintf(w, `<h3 style="color:green;"> You have registered succesfully. You can now login safely, press on the login button</h3>`)
+		fmt.Fprintf(w, `<h4 style="color:green;"> You have registered succesfully. You can now login safely, press on the login button</h3>`)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -58,10 +58,10 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		return
 	} else {
 		fmt.Println("unauthorized user:", username)
-		w.WriteHeader(http.StatusForbidden)
+		//w.WriteHeader(http.StatusForbidden)
 		//w.Header().Set("Content-Type", "text/html")
-		errorMessage := htmx.UnauthorizedRegister() // Assuming this returns HTML for the message
-		fmt.Fprintf(w, errorMessage)                // This will replace the contents of #Badresponse
+		errorMessage := htmx.UnauthorizedRegister()
+		fmt.Fprintf(w, errorMessage)
 		return
 
 	}

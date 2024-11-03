@@ -181,21 +181,11 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 		fmt.Println("Invalid password.")
-		w.WriteHeader(http.StatusForbidden)
-		w.Write([]byte("<div class='error'>Error: Bad kitty </div>"))
+		errorMessage := htmx.BadPassword()
+		fmt.Fprintf(w, errorMessage)
 		return
 	}
 }
-
-//	truePassword := os.Getenv("password")
-
-/*if password != truePassword.Password {
-	w.WriteHeader(http.StatusForbidden)
-	w.Write([]byte("<div class='error'>Error: Bad kitty (bad password)</div>"))
-	return
-} else {
-	playlistjson.PasswordRight(w, r)
-}*/
 
 func serveVideoHandler(w http.ResponseWriter, r *http.Request) {
 	kingData, err := os.ReadFile("html/video/pickvid.html")
@@ -292,7 +282,7 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
-		fmt.Fprintln(w, "I'm a teapot!")
+		fmt.Fprintf(w, "I'm a teapot!")
 		return
 	}
 

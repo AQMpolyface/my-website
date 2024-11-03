@@ -3,7 +3,8 @@ package htmx
 func SuccessRegister() string {
 	return `
 	<h5 style="color:green;">Succesfull registration. You can now login </h5>
-	<br />
+	<br>
+	<br>
     <button
         class="login-button"
         hx-get="/relogin"
@@ -14,6 +15,9 @@ func SuccessRegister() string {
 	`
 }
 
+func BadPassword() string {
+	return `<h3 style="color:red;">Bad kitty</h3>`
+}
 func ErrorRegister() string {
 	return `
 		<h5 style="color:red;">Registration failed. Please try again or contact thw admin uwu.</h5>
@@ -23,7 +27,7 @@ func ErrorRegister() string {
 }
 func UnauthorizedRegister() string {
 	return `
-		<h5 style="color:red;">Registration failed, you arent an authorized user. Please contact the admin if you are actually authprized</h5>
+		<h5 style="color:red;">Registration failed, you arent a authorized user. Please contact the admin if you are actually authprized</h5>
 		<br />
 		`
 
