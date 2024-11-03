@@ -159,19 +159,19 @@ func GetUsers(db *sql.DB) (User, error) {
 func MakeUuid(db *sql.DB) (string, error) {
 	var compUuid string
 	var newUuid uuid.UUID
+
 	for {
 		newUuid = uuid.NewV4()
 		fmt.Println("newUuid:", newUuid)
+
+		// Check if the UUID already exists in the database
 		err := db.QueryRow("SELECT UUID FROM authentification WHERE UUID = ?", newUuid).Scan(&compUuid)
 
 		if err == sql.ErrNoRows {
-			// UUID does not exist
-			// continuing the loop until there is a new uuid
+			// UUID does not exist, so we can use this UUID
+			break
 		} else if err != nil {
 			return "", err
-		} else {
-			//break if no one has the same uuid
-			break
 		}
 
 	}
