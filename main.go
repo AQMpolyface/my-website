@@ -83,7 +83,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		playlistjsonHandlerPost(w, r)
 	case "/submit-password":
 		passwordPost(w, r)
-	case "/submit-register":
+	case "/submit-registration":
 		database.RegisterPost(w, r)
 	case "/submit":
 		formHandler(w, r)
