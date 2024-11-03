@@ -69,10 +69,12 @@ func AddUser(db *sql.DB, username, password string) error {
 func CheckUsername(db *sql.DB, username string) (bool, error) {
 	var username1 string
 
+	fmt.Println("username:", username)
 	var query string
 	query = fmt.Sprintf("SELECT username FROM authorized_usernames WHERE username =  '%s'; ", username)
-	err := db.QueryRow(query).Scan(&username1)
 
+	err := db.QueryRow(query).Scan(&username1)
+	fmt.Println("username1:", username1)
 	if err == sql.ErrNoRows || username1 == "" {
 		// User does not exist
 		return false, nil

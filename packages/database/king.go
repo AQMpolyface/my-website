@@ -51,6 +51,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, response)
 
 	} else {
+		fmt.Fprintf(w, "Error fetching database: you arent an authorized user (only approved user can sign up")
 		fmt.Println("Error fetching database: you arent an authorized user (only approved user can sign up")
 		http.Error(w, "Error fetching database: you arent an authorized user (only approved user can sign up)", http.StatusUnauthorized)
 		return
