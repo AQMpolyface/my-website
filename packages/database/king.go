@@ -77,8 +77,12 @@ func PasswordRight(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	cookie := http.Cookie{
-		Name:  strings.TrimSpace("uuid"),
-		Value: strings.TrimSpace(uuid),
+		Name:     strings.TrimSpace("uuid"),
+		Value:    strings.TrimSpace(uuid),
+		Path:     "/",                   // Set the path if necessary
+		HttpOnly: true,                  // Set HttpOnly if you want to prevent JavaScript access
+		Secure:   true,                  // Set Secure if the cookie should only be sent over HTTPS
+		SameSite: http.SameSiteNoneMode, // Set SameSite attribute to None
 	}
 	http.SetCookie(w, &cookie)
 
