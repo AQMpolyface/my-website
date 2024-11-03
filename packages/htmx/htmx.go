@@ -20,7 +20,7 @@ func ReturnReloginString() string {
             <form
                 id="passwordForm"
                 hx-post="/submit-password"
-                hx-target="#content"
+                hx-target="#Badresponse"
                 hx-swap="innerHTML"
                 hx-on="htmx:responseError: document.getElementById('Badresponse').innerHTML = event.detail.xhr.responseText; document.getElementById('Badresponse').style.display = 'block';"
             >
@@ -63,7 +63,7 @@ func ReturnRegisterString() string {
         id="registrationForm"
         onsubmit="return checkPassword()"
         hx-post="/submit-registration"
-        hx-target="#content"
+        hx-target="#Badresponse"
         hx-swap="innerHTML"
         hx-on="htmx:responseError: document.getElementById('Badresponse').innerHTML = event.detail.xhr.responseText; document.getElementById('Badresponse').style.display = 'block';"
     >
@@ -91,6 +91,7 @@ func ReturnRegisterString() string {
         <br />
         <button type="submit">Register</button>
     </form>
+
     <div id="Badresponse" style="color: red;"></div>
     <br />
     <button

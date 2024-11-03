@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	uuid "github.com/satori/go.uuid"
@@ -69,7 +70,9 @@ func AddUser(db *sql.DB, username, password string) error {
 func CheckUsername(db *sql.DB, username string) (bool, error) {
 	var username1 string
 
-	fmt.Println("username:", username)
+	//fmt.Println("username:", username)
+
+	username = strings.TrimSpace(username)
 	var query string
 	query = fmt.Sprintf("SELECT username FROM authorized_usernames WHERE username =  '%s'; ", username)
 
