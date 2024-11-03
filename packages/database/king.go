@@ -12,7 +12,7 @@ import (
 )
 
 func RegisterPost(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Println("got the post req")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -29,6 +29,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 	username := r.FormValue("username")
 
+	fmt.Println("password:", password, "username:", username)
 	db, err := ConnectToDB()
 	if err != nil {
 		fmt.Println("error connecting to database")
