@@ -41,9 +41,9 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	valid, err := CheckUsername(db, username)
 	if err != nil {
 		fmt.Println("Error fetching after checkUsername database", err)
-
+		errorMessage := htmx.ErrorRegister()
 		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "Error fetching database", http.StatusInternalServerError)
+		fmt.Fprintf(w, errorMessage, http.StatusInternalServerError)
 		return
 	}
 	if valid {
@@ -60,7 +60,8 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		//fmt.Fprintf(w, "Error fetching database: you arent an authorized user (only approved user can sign up")
 		fmt.Println("Error fetching database: you arent an authorized user (only approved user can sign up")
 		w.WriteHeader(http.StatusForbidden)
-		fmt.Fprintf(w, `<h3 style="color:red;">Error fetching database: you arent an authorized user (only approved user can sign up</h3>`))
+		errorMessage := htmx.UnauthorizedRegister()
+		fmt.Fprintf(w, errorMessage)
 		http.Error(w, "Error fetching database: you arent an authorized user (only approved user can sign up)", http.StatusUnauthorized)
 		return
 	}
