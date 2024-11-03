@@ -11,17 +11,6 @@ import (
 	//"website/packages/database"
 )
 
-func SetCookieuwu(w http.ResponseWriter, r *http.Request, uuid string) {
-	cookie := http.Cookie{
-		Name:     strings.TrimSpace("uuid"),
-		Value:    strings.TrimSpace(uuid),
-		Path:     "/",                   // Set the path if necessary
-		HttpOnly: true,                  // Set HttpOnly if you want to prevent JavaScript access
-		Secure:   true,                  // Set Secure if the cookie should only be sent over HTTPS
-		SameSite: http.SameSiteNoneMode, // Set SameSite attribute to None
-	}
-	http.SetCookie(w, &cookie)
-}
 func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println("got the post req")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -87,8 +76,15 @@ func PasswordRight(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error making uuid", err)
 		return
 	}
-	SetCookieuwu(w, r, uuid)
-
+	cookie := http.Cookie{
+		Name:     strings.TrimSpace("uuid"),
+		Value:    strings.TrimSpace(uuid),
+		Path:     "/",                   // Set the path if necessary
+		HttpOnly: true,                  // Set HttpOnly if you want to prevent JavaScript access
+		Secure:   true,                  // Set Secure if the cookie should only be sent over HTTPS
+		SameSite: http.SameSiteNoneMode, // Set SameSite attribute to None
+	}
+	http.SetCookie(w, &cookie)
 	// Response data to send back
 	http.Redirect(w, r, "/protected", http.StatusSeeOther)
 }

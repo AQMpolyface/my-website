@@ -160,7 +160,15 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error executing query:", err)
 			return
 		}
-		database.SetCookieuwu(w, r, username1)
+		cookie := http.Cookie{
+			Name:     strings.TrimSpace("uuid"),
+			Value:    strings.TrimSpace(username1),
+			Path:     "/",                   // Set the path if necessary
+			HttpOnly: true,                  // Set HttpOnly if you want to prevent JavaScript access
+			Secure:   true,                  // Set Secure if the cookie should only be sent over HTTPS
+			SameSite: http.SameSiteNoneMode, // Set SameSite attribute to None
+		}
+		http.SetCookie(w, &cookie)
 		fmt.Fprintf(w, `<h4 style="color:green;">You are logged in. you can you go to <a>https://polyface.ch/protected</a></h4>`)
 		http.Redirect(w, r, "/protected", http.StatusSeeOther)
 		//err := database.AddUser(db, username, password)
