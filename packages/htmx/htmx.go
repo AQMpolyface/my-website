@@ -2,16 +2,15 @@ package htmx
 
 func SuccessRegister() string {
 	return `
-	<h5 style="color:green;">Succesfull registration. You can now login </h5>
-	<br>
-	<br>
-    <button
-        class="login-button"
-        hx-get="/relogin"
-        hx-target="#content"
-            >
+
+	<div>
+    <h5 style="color:green;">Successful registration. You can now login</h5>
+    <br>
+    <button class="login-button" onClick="location.reload();">
         Log In
     </button>
+</div>
+
 	`
 }
 
