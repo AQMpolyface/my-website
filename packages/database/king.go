@@ -35,20 +35,21 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error connecting to database")
 		return
 	}
-	db, err = ConnectToDB()
-	if err != nil {
-		fmt.Println("error connecting to db", err)
-		return
-	}
+
+	defer db.Close()
+
 	valid, err := CheckUsername(db, username)
 	if err != nil {
 		fmt.Println("Error fetching after checkUsername database", err)
-		http.Error(w, "Error fetching database", http.StatusInternalServerError)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Error fetching database", http.StatusInternalServerError)
 		return
 	}
 	if valid {
 		fmt.Println("adding user to db")
 		err = AddUser(db, username, password)
+		//fmt.Fprintf(w, `<h3 style="color:green;"> You have registered succesfully. You can now login safely, press on the login button</h3>`)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -58,6 +59,8 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	} else {
 		//fmt.Fprintf(w, "Error fetching database: you arent an authorized user (only approved user can sign up")
 		fmt.Println("Error fetching database: you arent an authorized user (only approved user can sign up")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintf(w, `<h3 style="color:red;">Error fetching database: you arent an authorized user (only approved user can sign up</h3>`))
 		http.Error(w, "Error fetching database: you arent an authorized user (only approved user can sign up)", http.StatusUnauthorized)
 		return
 	}
@@ -71,6 +74,8 @@ func PasswordRight(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error connecting to db", err)
 		return
 	}
+
+	defer db.Close()
 	uuid, err := MakeUuid(db)
 	if err != nil || uuid == "" {
 		fmt.Println("error making uuid", err)
@@ -121,6 +126,8 @@ func checkCookie(cookie string) (bool, error) {
 		fmt.Println("error connecting to db:", err)
 		return false, err
 	}
+
+	defer db.Close()
 	valid, err := CheckUuid(db, cookie)
 	if err != nil {
 		fmt.Println("error retrieving uuid:", err)

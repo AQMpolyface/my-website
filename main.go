@@ -48,6 +48,7 @@ func serveProtectedFiles(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error connecting to db", err)
 		return
 	}
+	defer db.Close()
 	valid, err := database.CheckUuid(db, cookie.Value)
 	if err != nil {
 		fmt.Println("error retrieving uuid from db:", err)
@@ -136,6 +137,7 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error connecting to the db", err)
 		return
 	}
+	defer db.Close()
 	valid, err := database.CheckUserCredentials(db, username, password)
 	if err != nil {
 		fmt.Println("error checking credentials", err)
@@ -148,6 +150,8 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("error connecting to db", err)
 			return
 		}
+
+		defer db.Close()
 		var username1 string
 		username = strings.TrimSpace(username)
 		//get the uuid of the logged in person
@@ -406,37 +410,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 		messageFileHandler.WriteString(decodedMessage)
 
 		//htmx response, with js clock
-		responseMessage := `<h3>Thanks for your submission. it is now <span id="time">uwu</span> in my timezone, so i will see when i can get back at you!</h3>
-		<script>	function sleep(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	}
-
-	async function time() {
-	timeNow = document.getElementById("time");
-
-	const options = {
-	timeZone: 'Europe/Zurich',
-	 dateStyle: 'full',
-	 timeStyle: 'long',
-	 /*hour: '2-digit',
-	minute: '2-digit',
-	second: '2-digit',
-	hour12: false*/
-	};
-
-	const formatter = new Intl.DateTimeFormat('en-US', options);
-	while (true) {
-
-		let date = new Date();
-		let formattedDate = formatter.format(date);
-		timeNow.innerHTML = formattedDate;
-		await sleep(1000);
-	}
-}
-
-	time()
-	</script>
-		`
+		responseMessage := htmx.GetSubmissionSuccess()
 		fmt.Fprint(w, responseMessage)
 	}
 }

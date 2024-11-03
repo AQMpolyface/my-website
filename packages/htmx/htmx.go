@@ -2,7 +2,7 @@ package htmx
 
 func SuccessRegister() string {
 	return `
-	<h5 style="color:green;">Succesfull registration. You can now login here:<a>https://polyface.ch/protected</a></h5>
+	<h5 style="color:green;">Succesfull registration. You can now login </h5>
 	<br />
     <button
         class="login-button"
@@ -12,6 +12,21 @@ func SuccessRegister() string {
         Log In
     </button>
 	`
+}
+
+func ErrorRegister() string {
+	return `
+		<h5 style="color:red;">Registration failed. Please try again or contact thw admin uwu.</h5>
+		<br />
+		`
+
+}
+func UnauthorizedRegister() string {
+	return `
+		<h5 style="color:red;">Registration failed, you arent an authorized user. Please contact the admin if you are actually authprized</h5>
+		<br />
+		`
+
 }
 
 func ReturnReloginString() string {
@@ -102,26 +117,80 @@ func ReturnRegisterString() string {
         Already have an account? Log In
     </button>
 <script>
+
 function isStringLengthValid(password) {
     const encoder = new TextEncoder();
     const byteArray = encoder.encode(password);
-    // Check if the length of the byte array is less than or equal to 72 cuz bcrypt doesnt support more than that
+    // Check if the length of the byte array is less than or equal to 72 because bcrypt doesn't support more than that
     return byteArray.length <= 72;
 }
-function checkPassword() {
 
+function containsSemicolon(input) {
+    return input.includes(';');
+}
+
+function checkPassword() {
     let password1 = document.getElementById("password1").value;
     let password2 = document.getElementById("password2").value;
+    let username = document.getElementById("username").value; // Assuming you have a username field
     let errorMessage = document.getElementById("Badresponse");
+
+    // Check for semicolons in the username and passwords
+    if (containsSemicolon(username) || containsSemicolon(password1)) {
+        errorMessage.innerHTML = "Username and password cannot contain a semicolon (;).";
+        alert("Username and password cannot contain a semicolon (;).");
+        return false;
+    }
 
     if (password1 !== password2) {
         errorMessage.innerHTML = "Passwords do not match. Please make them match.";
         alert("Passwords do not match");
         return false;
     }
-    return isStringLengthValid(password1);
 
+    if (!isStringLengthValid(password1)) {
+        errorMessage.innerHTML = "Password must be 72 bytes or less.";
+        alert("Password must be 72 bytes or less.");
+        return false;
+    }
+
+    return true; // Return true if all checks pass
 }
+
 </script>
 </div>`
+}
+
+func GetSubmissionSuccess() string {
+	return `<h3>Thanks for your submission. it is now <span id="time">uwu</span> in my timezone, so i will see when i can get back at you!</h3>
+			<script>	function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+
+		async function time() {
+		timeNow = document.getElementById("time");
+
+		const options = {
+		timeZone: 'Europe/Zurich',
+		 dateStyle: 'full',
+		 timeStyle: 'long',
+		 /*hour: '2-digit',
+		minute: '2-digit',
+		second: '2-digit',
+		hour12: false*/
+		};
+
+		const formatter = new Intl.DateTimeFormat('en-US', options);
+		while (true) {
+
+			let date = new Date();
+			let formattedDate = formatter.format(date);
+			timeNow.innerHTML = formattedDate;
+			await sleep(1000);
+		}
+}
+
+		time()
+		</script>
+			`
 }
