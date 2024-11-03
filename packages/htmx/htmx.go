@@ -40,7 +40,9 @@ func ReturnReloginString() string {
                 <br />
                 <button type="submit">Submit</button>
             </form>
-            <div id="Badresponse"></div>
+
+            <div id="Badresponse" style="color: red;"></div>
+
             <br />
             <button
                 class="register-button"
