@@ -73,10 +73,8 @@ func CheckUsername(db *sql.DB, username string) (bool, error) {
 	//fmt.Println("username:", username)
 
 	username = strings.TrimSpace(username)
-	var query string
-	query = fmt.Sprintf("SELECT username FROM authorized_usernames WHERE username =  '%s'; ", username)
 
-	err := db.QueryRow(query).Scan(&username1)
+	err := db.QueryRow("SELECT username FROM authorized_usernames WHERE username = ?", username).Scan(&username1)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("No rows returned for username:", username)
