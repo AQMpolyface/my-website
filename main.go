@@ -125,8 +125,8 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
-		w.WriteHeader(418)
 		fmt.Fprintln(w, "I'm a teapot!")
+		return
 	}
 
 	r.ParseForm()
@@ -292,8 +292,8 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
-		w.WriteHeader(418)
 		fmt.Fprintln(w, "I'm a teapot!")
+		return
 	}
 
 	body, err := io.ReadAll(r.Body)

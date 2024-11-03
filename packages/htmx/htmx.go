@@ -37,7 +37,6 @@ func ReturnReloginString() string {
                 hx-post="/submit-password"
                 hx-target="#content"
                 hx-swap="innerHTML"
-                hx-on="htmx:responseError: document.getElementById('Badresponse').innerHTML = event.detail.xhr.responseText; document.getElementById('Badresponse').style.display = 'block';"
             >
             <h2>Login</h2>
                 <input
@@ -80,7 +79,6 @@ func ReturnRegisterString() string {
         hx-post="/submit-registration"
         hx-target="#content"
         hx-swap="innerHTML"
-        hx-on="htmx:responseError: document.getElementById('Badresponse').innerHTML = event.detail.xhr.responseText; document.getElementById('Badresponse').style.display = 'block';"
     >
         <h2>Register</h2>
         <input

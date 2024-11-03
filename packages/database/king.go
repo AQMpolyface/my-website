@@ -17,12 +17,12 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	//TEAPOT  nbr 2 LETS GOO :3
+	//TEAPOT  nbr 3 LETS GOO :3
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
-		w.WriteHeader(418)
 		fmt.Fprintln(w, "I'm a teapot!")
+		return
 	}
 
 	r.ParseForm()
@@ -55,15 +55,15 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		}
 		response := htmx.SuccessRegister()
 		fmt.Fprintf(w, response)
-
+		return
 	} else {
 		//fmt.Fprintf(w, "Error fetching database: you arent an authorized user (only approved user can sign up")
-		fmt.Println("Error fetching database: you arent an authorized user (only approved user can sign up")
+
 		w.WriteHeader(http.StatusForbidden)
 		errorMessage := htmx.UnauthorizedRegister()
 		fmt.Fprintf(w, errorMessage)
-		http.Error(w, "Error fetching database: you arent an authorized user (only approved user can sign up)", http.StatusUnauthorized)
 		return
+
 	}
 
 }
