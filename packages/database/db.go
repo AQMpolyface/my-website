@@ -35,6 +35,7 @@ func ConnectToDB() (*sql.DB, error) {
 	fmt.Println("started connecting")
 	config := NewEnvDBConfig()
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.GetUsername(), config.GetPassword(), config.GetHost(), config.GetPort(), config.GetDatabase())
+	fmt.Println(connectionString)
 	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		fmt.Println("error connecting to db", err)
