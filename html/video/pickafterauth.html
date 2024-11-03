@@ -3,57 +3,285 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Password Check uwu</title>
+        <title>Lord of the Rings Theater</title>
+        <style>
+            :root {
+                --primary-color: #2a4365;
+                --secondary-color: #4a5568;
+            }
+
+            body {
+                margin: 0;
+                padding: 20px;
+                background-color: #1a202c;
+                color: #fff;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+            }
+
+            .video-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .video-wrapper {
+                margin-bottom: 2rem;
+                background: var(--primary-color);
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .video-title {
+                padding: 1rem;
+                margin: 0;
+                background: var(--secondary-color);
+                font-size: 1.25rem;
+            }
+
+            .video-player {
+                width: 100%;
+                max-height: 70vh;
+                background: #000;
+            }
+
+            .myVideo {
+                width: 100%;
+                height: auto;
+            }
+
+            .video-controls {
+                padding: 1rem;
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                background: var(--secondary-color);
+            }
+
+            .timestamp {
+                background: rgba(0, 0, 0, 0.3);
+                padding: 0.5rem;
+                border-radius: 4px;
+                font-size: 0.875rem;
+            }
+
+            .quality-selector {
+                padding: 0.5rem;
+                border-radius: 4px;
+                background: var(--primary-color);
+                color: white;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        </style>
     </head>
     <body>
-        <div id="lotr fellowship">
-            <video class="myVideo" controls id="video1" loop muted poster="/images/protected/the_fellowship_of_the_ring.jpg">
-                <source src="/images/protected/uwu1.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-      <div id="lotr two_towers">
-          <video class="myVideo" controls id="video2" loop muted poster="/images/protected/the_two_towers.jpg">
-                <source src="/images/protected/uwu2.mp4" type="video/mp4" />
-                          Your browser does not support the video tag.
-        </video>
-        <div id="lotr return">
-                  <video class="myVideo" controls id="video3" loop muted poster="/images/protected/The_Return_of_the_King_Poster_01-2655414658.jpg">
-                      <source src="/images/protected/uwu3.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                  </video>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <h2 class="video-title">The Fellowship of the Ring</h2>
+                <div class="video-player">
+                    <video
+                        class="myVideo"
+                        controls
+                        id="video1"
+                        preload="metadata"
+                        poster="/images/protected/the_fellowship_of_ring.jpg"
+                    >
+                        <source
+                            src="/images/protected/uwu1.mp4"
+                            type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-controls">
+                    <span class="timestamp" id="timestamp1">00:00</span>
+                    <select class="quality-selector" id="quality1">
+                        <option value="auto">Auto</option>
+                        <option value="1080">1080p</option>
+                        <option value="720">720p</option>
+                        <option value="480">480p</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="video-wrapper">
+                <h2 class="video-title">The Two Towers</h2>
+                <div class="video-player">
+                    <video
+                        class="myVideo"
+                        controls
+                        id="video2"
+                        preload="metadata"
+                        poster="/images/protected/the_two_towers.jpg"
+                    >
+                        <source
+                            src="/images/protected/uwu2.mp4"
+                            type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-controls">
+                    <span class="timestamp" id="timestamp2">00:00</span>
+                    <select class="quality-selector" id="quality2">
+                        <option value="auto">Auto</option>
+                        <option value="1080">1080p</option>
+                        <option value="720">720p</option>
+                        <option value="480">480p</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="video-wrapper">
+                <h2 class="video-title">The Return of the King</h2>
+                <div class="video-player">
+                    <video
+                        class="myVideo"
+                        controls
+                        id="video3"
+                        preload="metadata"
+                        poster="/images/protected/The_Return_of_the_King_Poster_01-2655414658.jpg"
+                    >
+                        <source
+                            src="/images/protected/uwu3.mp4"
+                            type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-controls">
+                    <span class="timestamp" id="timestamp3">00:00</span>
+                    <select class="quality-selector" id="quality3">
+                        <option value="auto">Auto</option>
+                        <option value="1080">1080p</option>
+                        <option value="720">720p</option>
+                        <option value="480">480p</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="video-wrapper">
+                <h2 class="video-title">Theoden Edit</h2>
+                <div class="video-player">
+                    <video
+                        class="myVideo"
+                        controls
+                        id="video4"
+                        preload="metadata"
+                        poster="/images/archbtw.png"
+                    >
+                        <source
+                            src="/images/protected/uwu4.mp4"
+                            type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-controls">
+                    <span class="timestamp" id="timestamp4">00:00</span>
+                    <select class="quality-selector" id="quality4">
+                        <option value="auto">Auto</option>
+                        <option value="1080">1080p</option>
+                        <option value="720">720p</option>
+                        <option value="480">480p</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
-        <div id="theoden edit">
-                          <video class="myVideo" controls id="video4" loop muted poster="/images/archbtw.png">
-                              <source src="/images/protected/uwu4.mp4" type="video/mp4" />
-                              Your browser does not support the video tag.
-                          </video>
-                </div>
         <script>
-              function setVideoTimestamp(videoId) {
-                  const video = document.getElementById(videoId);
-                  document.cookie = `${videoId}Timestamp=` + Math.floor(video.currentTime) + "; path=/";
-              }
+            class VideoManager {
+                constructor() {
+                    this.videos = document.querySelectorAll(".myVideo");
+                    this.initializeVideos();
+                }
 
-              function setInitialTime(videoId) {
-                  const cookies = document.cookie.split('; ');
-                  const timestampCookie = cookies.find(cookie => cookie.startsWith(`${videoId}Timestamp=`));
+                formatTime(seconds) {
+                    const h = Math.floor(seconds / 3600);
+                    const m = Math.floor((seconds % 3600) / 60);
+                    const s = Math.floor(seconds % 60);
+                    return `${h > 0 ? h + ":" : ""}${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+                }
 
-                  if (timestampCookie) {
-                      const timestamp = timestampCookie.split('=')[1];
-                      const video = document.getElementById(videoId);
-                      video.currentTime = timestamp; // Set video to last watched timestamp
-                  }
-              }
+                setVideoTimestamp(videoId, time) {
+                    const expiryDate = new Date();
+                    expiryDate.setDate(expiryDate.getDate() + 30); // 30 days expiry
+                    document.cookie = `${videoId}Timestamp=${Math.floor(time)}; expires=${expiryDate.toUTCString()}; path=/; SameSite=Strict`;
+                }
 
-              const videos = document.querySelectorAll('.myVideo');
-              videos.forEach(video => {
-                  setInitialTime(video.id);
+                getVideoTimestamp(videoId) {
+                    const cookies = document.cookie.split("; ");
+                    const timestampCookie = cookies.find((cookie) =>
+                        cookie.startsWith(`${videoId}Timestamp=`),
+                    );
+                    return timestampCookie
+                        ? parseInt(timestampCookie.split("=")[1])
+                        : 0;
+                }
 
-                  video.addEventListener('play', () => {
-                      setInterval(() => setVideoTimestamp(video.id), 5000); // Update every 5 seconds
-                  });
-              });
-          </script>
+                initializeVideos() {
+                    this.videos.forEach((video) => {
+                        // Set initial time from cookie
+                        const savedTime = this.getVideoTimestamp(video.id);
+                        if (savedTime > 0) {
+                            video.currentTime = savedTime;
+                        }
+
+                        // Update timestamp display
+                        const timestampElement = document.getElementById(
+                            `timestamp${video.id.slice(-1)}`,
+                        );
+
+                        // Time update event
+                        video.addEventListener("timeupdate", () => {
+                            if (timestampElement) {
+                                timestampElement.textContent = this.formatTime(
+                                    video.currentTime,
+                                );
+                            }
+                            this.setVideoTimestamp(video.id, video.currentTime);
+                        });
+
+                        // Quality selector event
+                        const qualitySelector = document.getElementById(
+                            `quality${video.id.slice(-1)}`,
+                        );
+                        if (qualitySelector) {
+                            qualitySelector.addEventListener("change", (e) => {
+                                const quality = e.target.value;
+                                if (quality !== "auto") {
+                                    // Here you would implement quality switching logic
+                                    console.log(
+                                        `Switching ${video.id} to ${quality}p`,
+                                    );
+                                }
+                            });
+                        }
+
+                        // Preload optimization
+                        video.addEventListener("canplay", () => {
+                            video.play().catch(() => {
+                                // Autoplay prevented by browser
+                                console.log("Autoplay prevented");
+                            });
+                        });
+
+                        // Error handling
+                        video.addEventListener("error", () => {
+                            console.error(`Error loading video: ${video.id}`);
+                            // Implement retry logic or fallback content here
+                        });
+                    });
+                }
+            }
+
+            // Initialize video manager when DOM is ready
+            document.addEventListener("DOMContentLoaded", () => {
+                new VideoManager();
+            });
+        </script>
     </body>
 </html>

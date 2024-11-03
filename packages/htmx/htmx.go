@@ -2,7 +2,7 @@ package htmx
 
 func SuccessRegister() string {
 	return `
-	<h5 style="color:green;">Succesfull registration. You can now login here:</h5>
+	<h5 style="color:green;">Succesfull registration. You can now login here:<a>https://polyface.ch/protected</a></h5>
 	<br />
     <button
         class="login-button"
