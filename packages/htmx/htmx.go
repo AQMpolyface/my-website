@@ -78,7 +78,7 @@ func ReturnRegisterString() string {
         id="registrationForm"
         onsubmit="return checkPassword()"
         hx-post="/submit-registration"
-        hx-target="#Badresponse"
+        hx-target="#content"
         hx-swap="outerHTML"
     >
         <h2>Register</h2>
