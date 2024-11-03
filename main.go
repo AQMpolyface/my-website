@@ -142,7 +142,7 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 	}
 	if valid {
 		fmt.Println("Password is valid!")
-
+		fmt.Fprintf(w, `<h4 style="color:green;">You are logged in. you can you go to <a>https://polyface.ch/protected</a></h4>`)
 		http.Redirect(w, r, "/protected", http.StatusSeeOther)
 		//err := database.AddUser(db, username, password)
 
