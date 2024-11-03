@@ -35,6 +35,11 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error connecting to database")
 		return
 	}
+	db, err = ConnectToDB()
+	if err != nil {
+		fmt.Println("error connecting to db", err)
+		return
+	}
 	valid, err := CheckUsername(db, username)
 	if err != nil {
 		fmt.Println("Error fetching after checkUsername database", err)
