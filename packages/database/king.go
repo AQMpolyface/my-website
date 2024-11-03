@@ -12,7 +12,7 @@ import (
 )
 
 func RegisterPost(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("got the post req")
+	//fmt.Println("got the post req")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -29,7 +29,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 	username := r.FormValue("username")
 
-	fmt.Println("password:", password, "username:", username)
+	//fmt.Println("password:", password, "username:", username)
 	db, err := ConnectToDB()
 	if err != nil {
 		fmt.Println("error connecting to database")
@@ -37,10 +37,12 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	}
 	valid, err := CheckUsername(db, username)
 	if err != nil {
+		fmt.Println("Error fetching after checkUsername database", err)
 		http.Error(w, "Error fetching database", http.StatusInternalServerError)
 		return
 	}
 	if valid {
+		fmt.Println("adding user to db")
 		err = AddUser(db, username, password)
 		if err != nil {
 			log.Fatal(err)
@@ -49,7 +51,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, response)
 
 	} else {
-
+		fmt.Println("Error fetching database: you arent an authorized user (only approved user can sign up")
 		http.Error(w, "Error fetching database: you arent an authorized user (only approved user can sign up)", http.StatusUnauthorized)
 		return
 	}

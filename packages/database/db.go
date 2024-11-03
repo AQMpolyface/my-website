@@ -32,16 +32,16 @@ var dataSourceName string = "polyface:@tcp(localhost:3336)/auth"
 var config *EnvDBConfig
 
 func ConnectToDB() (*sql.DB, error) {
-	fmt.Println("started connecting")
+	//fmt.Println("started connecting")
 	config := NewEnvDBConfig()
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.GetUsername(), config.GetPassword(), config.GetHost(), config.GetPort(), config.GetDatabase())
-	fmt.Println(connectionString)
+	//fmt.Println(connectionString)
 	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		fmt.Println("error connecting to db", err)
 		return nil, err
 	}
-	fmt.Println("done connecting")
+	//fmt.Println("done connecting")
 	return db, nil
 }
 
@@ -70,10 +70,10 @@ func CheckUsername(db *sql.DB, username string) (bool, error) {
 	var username1 string
 
 	var query string
-	query = fmt.Sprintf("SELECT password FROM authentification WHERE username = '%s'; ", username)
+	query = fmt.Sprintf("SELECT username FROM authorized_usernames WHERE username =  '%s'; ", username)
 	err := db.QueryRow(query).Scan(&username1)
 
-	if err == sql.ErrNoRows {
+	if err == sql.ErrNoRows || username1 == "" {
 		// User does not exist
 		return false, nil
 	} else if err != nil {
