@@ -77,12 +77,19 @@ func CheckUsername(db *sql.DB, username string) (bool, error) {
 	query = fmt.Sprintf("SELECT username FROM authorized_usernames WHERE username =  '%s'; ", username)
 
 	err := db.QueryRow(query).Scan(&username1)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			fmt.Println("No rows returned for username:", username)
+			return false, nil
+		}
+		fmt.Println("Error executing query:", err)
+		return false, err
+	}
+
 	fmt.Println("username1:", username1)
-	if err == sql.ErrNoRows || username1 == "" {
+	if username1 == "" {
 		// User does not exist
 		return false, nil
-	} else if err != nil {
-		return false, err
 	}
 	return true, nil
 
