@@ -59,7 +59,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Println("unauthorized user:", username)
 		w.WriteHeader(http.StatusForbidden)
-		w.Header().Set("Content-Type", "text/html")
+		//w.Header().Set("Content-Type", "text/html")
 		errorMessage := htmx.UnauthorizedRegister() // Assuming this returns HTML for the message
 		fmt.Fprintf(w, errorMessage)                // This will replace the contents of #Badresponse
 		return

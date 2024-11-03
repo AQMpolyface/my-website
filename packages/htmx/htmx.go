@@ -62,6 +62,7 @@ func ReturnReloginString() string {
                 class="register-button"
                 hx-get="/register"
                 hx-target="#content"
+                hx-swap="outerHTML"
             >
                 Register
             </button>
@@ -78,7 +79,7 @@ func ReturnRegisterString() string {
         onsubmit="return checkPassword()"
         hx-post="/submit-registration"
         hx-target="#Badresponse"
-        hx-swap="innerHTML"
+        hx-swap="outerHTML"
     >
         <h2>Register</h2>
         <input
@@ -111,6 +112,7 @@ func ReturnRegisterString() string {
         class="login-button"
         hx-get="/relogin"
         hx-target="#content"
+        hx-swap="outerHTML"
             >
         Already have an account? Log In
     </button>
