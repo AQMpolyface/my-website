@@ -142,7 +142,7 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 	}
 	if valid {
 		fmt.Println("Password is valid!")
-		//	database.PasswordRight(w, r)
+		database.PasswordRight(w, r)
 		//err := database.AddUser(db, username, password)
 		if err != nil {
 			log.Fatal("error making new database entry")
