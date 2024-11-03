@@ -57,11 +57,11 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, response)
 		return
 	} else {
-		//fmt.Fprintf(w, "Error fetching database: you arent an authorized user (only approved user can sign up")
-		fmt.Println("unahthorized user:", username)
+		fmt.Println("unauthorized user:", username)
 		w.WriteHeader(http.StatusForbidden)
-		errorMessage := htmx.UnauthorizedRegister()
-		fmt.Fprintf(w, errorMessage)
+		w.Header().Set("Content-Type", "text/html")
+		errorMessage := htmx.UnauthorizedRegister() // Assuming this returns HTML for the message
+		fmt.Fprintf(w, errorMessage)                // This will replace the contents of #Badresponse
 		return
 
 	}
