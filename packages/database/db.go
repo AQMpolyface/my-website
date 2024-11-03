@@ -29,7 +29,6 @@ type EnvDBConfig struct {
 	database string
 }
 
-var dataSourceName string = "polyface:@tcp(localhost:3336)/auth"
 var config *EnvDBConfig
 
 func ConnectToDB() (*sql.DB, error) {

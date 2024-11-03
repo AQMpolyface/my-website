@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"io"
 	"log"
@@ -142,6 +143,24 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 	}
 	if valid {
 		fmt.Println("Password is valid!")
+		db, err := database.ConnectToDB()
+		if err != nil {
+			fmt.Println("error connecting to db", err)
+			return
+		}
+		var username1 string
+		username = strings.TrimSpace(username)
+		//get the uuid of the logged in person
+		err = db.QueryRow("SELECT uuid FROM authentification WHERE username = ?", username).Scan(&username1)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				fmt.Println("No rows returned for username:", username)
+				return
+			}
+			fmt.Println("Error executing query:", err)
+			return
+		}
+		database.SetCookieuwu(w, r, username1)
 		fmt.Fprintf(w, `<h4 style="color:green;">You are logged in. you can you go to <a>https://polyface.ch/protected</a></h4>`)
 		http.Redirect(w, r, "/protected", http.StatusSeeOther)
 		//err := database.AddUser(db, username, password)
