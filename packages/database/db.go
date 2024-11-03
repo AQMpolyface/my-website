@@ -42,6 +42,17 @@ func ConnectToDB() (*sql.DB, error) {
 		fmt.Println("error connecting to db", err)
 		return nil, err
 	}
+	if err := db.Ping(); err != nil {
+		fmt.Println("Database connection is not established:", err)
+		return nil, err
+	}
+
+	_, err = db.Exec("SELECT 1;")
+	if err != nil {
+		fmt.Println("Failed to execute test query:", err)
+	} else {
+		fmt.Println("Test query executed successfully")
+	}
 	//fmt.Println("done connecting")
 	return db, nil
 }
