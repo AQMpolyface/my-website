@@ -7,13 +7,13 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
 	"website/packages/database"
+	"website/packages/htmx"
 	"website/packages/playlistjson"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 const visits string = "visits.txt"
@@ -33,24 +33,32 @@ func main() {
 
 func serveProtectedFiles(w http.ResponseWriter, r *http.Request) {
 
-	cookie, err := r.Cookie("authenticated")
-
+	cookie, err := r.Cookie("uuid")
 	if err != nil {
 		if err == http.ErrNoCookie {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
-		// Some other error occurred
 		http.Error(w, "Error retrieving cookie", http.StatusInternalServerError)
 		return
 	}
+	db, err := database.ConnectToDB()
+	if err != nil {
+		fmt.Println("error connecting to db", err)
+		return
+	}
+	valid, err := database.CheckUuid(db, cookie.Value)
+	if err != nil {
+		fmt.Println("error retrieving uuid from db:", err)
+		return
+	}
 	// fmt.Println(cookie.Value)
-	if cookie.Value != os.Getenv("cookie") {
-		// If the cookie is missing or invalid, you can respond with an error or redirect
-		http.Redirect(w, r, "/", http.StatusSeeOther) // Redirect to a login page
+	if valid {
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	} else {
-		http.StripPrefix("/images/protected", http.FileServer(http.Dir("images"))).ServeHTTP(w, r)
+		http.StripPrefix("/vid", http.FileServer(http.Dir("vid"))).ServeHTTP(w, r)
 	}
 }
 func mainHandler(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +72,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 	case "/blahaj":
 		blahajHandler(w, r)
 	case "/protected":
-		playlistjson.ProtectionHandler(w, r)
+		database.ProtectionHandler(w, r)
 	case "/about":
 		aboutHandler(w, r)
 	case "/projects":
@@ -75,6 +83,8 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		playlistjsonHandlerPost(w, r)
 	case "/submit-password":
 		passwordPost(w, r)
+	case "/submit-register":
+		database.RegisterPost(w, r)
 	case "/submit":
 		formHandler(w, r)
 	case "/uwu":
@@ -85,17 +95,31 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		serveFileHandler(w, r)
 	case "/auth":
 		serveVideoHandler(w, r)
+	case "/register":
+		registerHandler(w, r)
+	case "/relogin":
+		reloginHandler(w, r)
 	default:
 		notFoundHandler(w, r)
 	}
 }
 
+func reloginHandler(w http.ResponseWriter, r *http.Request) {
+	stringuwu := htmx.ReturnReloginString()
+	fmt.Fprintf(w, stringuwu)
+
+}
+func registerHandler(w http.ResponseWriter, r *http.Request) {
+	stringuwu := htmx.ReturnRegisterString()
+	fmt.Fprintf(w, stringuwu)
+
+}
 func passwordPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	//TEAPOT  nbr 2 LETS GOO :3
+	//TEAPOT  nbr 3 LETS GOO :3
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusTeapot)
 		fmt.Println("teapot party")
@@ -105,32 +129,31 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseForm()
 	password := r.FormValue("password")
-	dbConn, err := database.ConnectToDB()
+	username := r.FormValue("username")
+	db, err := database.ConnectToDB()
 	if err != nil {
 		fmt.Println("error connecting to the db", err)
 		return
 	}
-	HashedPasswd, err := database.GetUsers(dbConn)
-	fmt.Println("password:", HashedPasswd.Password)
-	fmt.Println("username:", HashedPasswd.Name)
-	if err != nil || HashedPasswd == (database.User{}) {
-		fmt.Println("error retrieving db credentials", err)
-		return
-	}
-	if HashedPasswd.Name != os.Getenv("protUsername") {
-		w.WriteHeader(http.StatusForbidden)
-		w.Write([]byte("<div class='error'>Error: Bad kitty </div>"))
-		return
-	}
-	err = bcrypt.CompareHashAndPassword([]byte(HashedPasswd.Password), []byte(password))
+	valid, err := database.CheckUserCredentials(db, username, password)
 	if err != nil {
+		fmt.Println("error checking credentials", err)
+		return
+	}
+	if valid {
+		fmt.Println("Password is valid!")
+		//	database.PasswordRight(w, r)
+		//err := database.AddUser(db, username, password)
+		if err != nil {
+			log.Fatal("error making new database entry")
+		}
+		return
+	} else {
+
 		fmt.Println("Invalid password.")
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte("<div class='error'>Error: Bad kitty </div>"))
 		return
-	} else {
-		fmt.Println("Password is valid!")
-		playlistjson.PasswordRight(w, r)
 	}
 }
 
@@ -163,6 +186,10 @@ func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	filename2 := r.URL.Path[len("/projects/temp/"):]
 	fmt.Println("filename2 = ", filename2)
 	fmt.Println("playlistFile = ", playlistFile)
+
+	//fixed directory traversal uwu
+	filename2 = filepath.Clean(filename2)
+	playlistFile = filepath.Clean(playlistFile)
 	osOpenFile := playlistFile
 	filejsonData, err := os.ReadFile(osOpenFile)
 	fmt.Println("filejsonData = ", string(filejsonData))
@@ -265,7 +292,7 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 
 	token := values.Get("token")
 	//call a function from packages/playlistjson that returns the exact url and just the filename
-	playlistFile, fileNames = playlistjson.PlaylistJson(w, r, token)
+	playlistjson.PlaylistJson(w, r, token)
 	// debug	fmt.Println("playlistfile at the end of playlistjsonpost:", playlistFile)
 
 }

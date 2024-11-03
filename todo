@@ -1,6 +1,4 @@
-include playlist-json
-host a few file
-make better html & css everywhere.
+include playlist-json //done
+host a few file //done
+make better html & css everywhere. //not done :( (i hate front-end)
 add a blog part
-
-add websocket when verbose = true

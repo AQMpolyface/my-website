@@ -1,7 +1,14 @@
-the website is polyface.ch
+Welcome to my website github page!
 
-it still sucks, but hey I will try to make it look better soon
-I won. got my https! now only have to completely redo my HTML &CSS cuz its caos right now.
+Website: polyface.ch
 
-WARNING: If for some reason you decide to read my code, i am not responsible for any stroks you might have.
-Consider yourself warned
+I’m planning a complete overhaul of the HTML and CSS to improve the overall structure and design. Stay tuned for a fresh and modern look!
+⚠️ Code Warning
+
+Caution: If you choose to dive into my code, please be advised that it may not be the most organized. I take no responsibility for any confusion or frustration that may arise. Consider yourself warned! 😅
+🛠️ Future Plans
+
+    HTML & CSS Redesign: Aiming for a cleaner, more efficient codebase.
+    Regular Updates: I’ll keep you posted on progress and new features!
+
+Thank you for visiting the repo! Your feedback/ideas/pull request/issues are always welcome as I continue to improve this project.

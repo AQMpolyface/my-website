@@ -7,6 +7,8 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	uuid "github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Database struct {
@@ -14,8 +16,9 @@ type Database struct {
 }
 
 type User struct {
-	Name     string
-	Password string
+	Name      string
+	Password  string
+	SessionId string
 }
 type EnvDBConfig struct {
 	host     string
@@ -39,6 +42,76 @@ func ConnectToDB() (*sql.DB, error) {
 	}
 	return db, nil
 }
+
+func AddUser(db *sql.DB, username, password string) error {
+
+	hashedPassword, err := hashPassword(password)
+	if err != nil {
+		fmt.Println("error hashing passwd:", err)
+		return err
+	}
+	// Generate a new UUID
+	userUUID, err := MakeUuid(db)
+
+	// Insert the new user into the database
+	query := "INSERT INTO authentification (username, password, uuid) VALUES (?, ?, ?)"
+	_, err = db.Exec(query, username, hashedPassword, userUUID)
+	if err != nil {
+		return fmt.Errorf("error inserting user: %v", err)
+	}
+
+	fmt.Println("User added successfully")
+	return nil
+}
+
+func CheckUsername(db *sql.DB, username string) (bool, error) {
+	var username1 string
+
+	var query string
+	query = fmt.Sprintf("SELECT password FROM authentification WHERE username = '%s'; ", username)
+	err := db.QueryRow(query).Scan(&username1)
+
+	if err == sql.ErrNoRows {
+		// User does not exist
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+	return true, nil
+
+}
+
+func hashPassword(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", fmt.Errorf("error hashing password: %v", err)
+	}
+	return string(hashedPassword), nil
+}
+
+func CheckUserCredentials(db *sql.DB, username, password string) (bool, error) {
+	var storedHash string
+
+	var query string
+	query = fmt.Sprintf("SELECT password FROM authentification WHERE username = '%s'; ", username)
+	err := db.QueryRow(query).Scan(&storedHash)
+
+	if err == sql.ErrNoRows {
+		// User does not exist
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(password))
+	if err != nil {
+		// Password does not match
+		return false, nil
+	}
+
+	// User exists and password matches
+	return true, nil
+}
 func NewEnvDBConfig() *EnvDBConfig {
 	return &EnvDBConfig{
 		host:     os.Getenv("DB_HOST"),
@@ -48,6 +121,56 @@ func NewEnvDBConfig() *EnvDBConfig {
 		database: os.Getenv("DB_DATABASE"),
 	}
 }
+
+func GetUsers(db *sql.DB) (User, error) {
+	var user User
+
+	err := db.QueryRow("SELECT USERNAME, PASSWORD FROM authentification").Scan(&user.Name, &user.Password)
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}
+
+func MakeUuid(db *sql.DB) (string, error) {
+	var compUuid string
+	var newUuid uuid.UUID
+	for {
+		newUuid = uuid.NewV4()
+		err := db.QueryRow("SELECT UUID FROM authentication WHERE UUID = ?", newUuid).Scan(&compUuid)
+
+		if err == sql.ErrNoRows {
+			// UUID does not exist
+			// continuing the loop until there is a new uuid
+		} else if err != nil {
+			return "", err
+		} else {
+			//break if no one has the same uuid
+			break
+		}
+
+	}
+
+	return newUuid.String(), nil
+}
+
+func CheckUuid(db *sql.DB, uuid string) (bool, error) {
+	var count int
+	// Query to count how many times the UUID exists
+	err := db.QueryRow("SELECT COUNT(*) FROM authentication WHERE UUID = ?", uuid).Scan(&count)
+	if err != nil {
+		// Handle any potential error
+		return false, err
+	}
+
+	// If count is greater than 0, the UUID exists so true is retuwurned
+	return count > 0, nil
+}
+
+/*func CreateNewUser(db *sql.DB, username string, password string, uuid string, id int) error {
+
+}*/
 
 func (c *EnvDBConfig) GetHost() string {
 	return c.host
@@ -67,15 +190,4 @@ func (c *EnvDBConfig) GetPassword() string {
 
 func (c *EnvDBConfig) GetDatabase() string {
 	return c.database
-}
-
-func GetUsers(db *sql.DB) (User, error) {
-	var user User
-
-	err := db.QueryRow("SELECT USERNAME, PASSWORD FROM authentification").Scan(&user.Name, &user.Password)
-	if err != nil {
-		return User{}, err
-	}
-
-	return user, nil
 }
