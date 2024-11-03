@@ -36,7 +36,7 @@ func ConnectToDB() (*sql.DB, error) {
 	//fmt.Println("started connecting")
 	config := NewEnvDBConfig()
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", config.GetUsername(), config.GetPassword(), config.GetHost(), config.GetPort(), config.GetDatabase())
-	fmt.Println(connectionString)
+	//fmt.Println(connectionString)
 	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		fmt.Println("error connecting to db", err)
@@ -66,7 +66,7 @@ func AddUser(db *sql.DB, username, password string) error {
 	}
 	// Generate a new UUID
 	userUUID, err := MakeUuid(db)
-
+	fmt.Println("useruuid:", userUUID)
 	// Insert the new user into the database
 	query := "INSERT INTO authentification (username, password, uuid) VALUES (?, ?, ?)"
 	_, err = db.Exec(query, username, hashedPassword, userUUID)
@@ -161,7 +161,8 @@ func MakeUuid(db *sql.DB) (string, error) {
 	var newUuid uuid.UUID
 	for {
 		newUuid = uuid.NewV4()
-		err := db.QueryRow("SELECT UUID FROM authentication WHERE UUID = ?", newUuid).Scan(&compUuid)
+		fmt.Println("newUuid:", newUuid)
+		err := db.QueryRow("SELECT UUID FROM authentification WHERE UUID = ?", newUuid).Scan(&compUuid)
 
 		if err == sql.ErrNoRows {
 			// UUID does not exist
@@ -181,7 +182,7 @@ func MakeUuid(db *sql.DB) (string, error) {
 func CheckUuid(db *sql.DB, uuid string) (bool, error) {
 	var count int
 	// Query to count how many times the UUID exists
-	err := db.QueryRow("SELECT COUNT(*) FROM authentication WHERE UUID = ?", uuid).Scan(&count)
+	err := db.QueryRow("SELECT COUNT(*) FROM authentification WHERE UUID = ?", uuid).Scan(&count)
 	if err != nil {
 		// Handle any potential error
 		return false, err
