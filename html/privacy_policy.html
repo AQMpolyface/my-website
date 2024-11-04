@@ -4,12 +4,182 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Privacy Policy</title>
-        <link rel="stylesheet" href="/css/privacy_policy.css" />
-        <link rel="stylesheet" href="/css/general.css" />
+        <style>
+            /* Catppuccin Mocha Colors */
+            :root {
+                --base: #1e1e2e;
+                --mantle: #181825;
+                --crust: #11111b;
+                --text: #cdd6f4;
+                --subtext1: #bac2de;
+                --subtext0: #a6adc8;
+                --overlay2: #9399b2;
+                --overlay1: #7f849c;
+                --overlay0: #6c7086;
+                --surface2: #585b70;
+                --surface1: #45475a;
+                --surface0: #313244;
+                --mauve: #cba6f7;
+                --pink: #f5c2e7;
+                --lavender: #b4befe;
+                --blue: #89b4fa;
+                --sapphire: #74c7ec;
+                --green: #a6e3a1;
+                --yellow: #f9e2af;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                background-color: var(--base);
+                color: var(--text);
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                line-height: 1.6;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            header {
+                background-color: var(--mantle);
+                padding: 2rem;
+                text-align: center;
+                border-bottom: 2px solid var(--surface0);
+            }
+
+            h1 {
+                color: var(--lavender);
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            main {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 2rem;
+                flex-grow: 1;
+            }
+
+            section {
+                background-color: var(--surface0);
+                border-radius: 1rem;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            h2 {
+                color: var(--mauve);
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+                border-bottom: 2px solid var(--surface1);
+                padding-bottom: 0.5rem;
+            }
+
+            h4 {
+                color: var(--pink);
+                font-size: 1.2rem;
+                margin: 1rem 0;
+            }
+
+            p {
+                color: var(--subtext0);
+                margin-bottom: 1rem;
+            }
+
+            ul {
+                list-style-position: inside;
+                margin: 1rem 0;
+            }
+
+            li {
+                color: var(--subtext1);
+                margin-bottom: 0.5rem;
+                padding-left: 1rem;
+            }
+
+            li::marker {
+                color: var(--green);
+            }
+
+            img {
+                max-width: 300px;
+                height: auto;
+                border-radius: 0.5rem;
+                margin: 1rem 0;
+                display: block;
+            }
+
+            .goBackIndex {
+                display: inline-block;
+                background-color: var(--surface1);
+                color: var(--text);
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                text-decoration: none;
+                transition: background-color 0.2s;
+                margin: 0 2rem 2rem;
+            }
+
+            .goBackIndex:hover {
+                background-color: var(--surface2);
+                text-decoration: none;
+            }
+
+            footer {
+                background-color: var(--mantle);
+                padding: 1.5rem;
+                text-align: center;
+                margin-top: auto;
+                border-top: 2px solid var(--surface0);
+            }
+
+            footer p {
+                color: var(--overlay0);
+                margin: 0.5rem 0;
+            }
+
+            footer a {
+                color: var(--blue);
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+
+            footer a:hover {
+                color: var(--sapphire);
+                text-decoration: underline;
+            }
+
+            @media (max-width: 768px) {
+                header {
+                    padding: 1.5rem;
+                }
+
+                main {
+                    padding: 1rem;
+                }
+
+                section {
+                    padding: 1.5rem;
+                }
+
+                h1 {
+                    font-size: 2rem;
+                }
+
+                h2 {
+                    font-size: 1.5rem;
+                }
+            }
+        </style>
     </head>
-    <style>
-        /* Catppuccin Mocha Colors */
-    </style>
     <body>
         <header>
             <h1>Privacy Policy</h1>
@@ -37,17 +207,17 @@
                     hehe.
                 </h4>
                 <img src="/images/pepe.webp" alt="pepelaugh" />
-
                 <p>(This is a joke, by the way; I don't collect anything.)</p>
             </section>
         </main>
-        <a href="/" class="goBackIndex" role="button">go back to index</a>
-        <!--  <footer>
+        <a href="/" class="goBackIndex" role="button">Back to Home</a>
+
         <footer>
             <p>Author: me :3</p>
-            <p><a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a></p>
+            <p>
+                <a href="mailto:polyface@tutamail.com">polyface@tutamail.com</a>
+            </p>
             <p>&copy; Copyright polyface Corp, 2024</p>
         </footer>
-    </footer>-->
     </body>
 </html>
