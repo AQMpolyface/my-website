@@ -191,10 +191,6 @@ func CheckUuid(db *sql.DB, uuid string) (bool, error) {
 	return count > 0, nil
 }
 
-/*func CreateNewUser(db *sql.DB, username string, password string, uuid string, id int) error {
-
-}*/
-
 func (c *EnvDBConfig) GetHost() string {
 	return c.host
 }

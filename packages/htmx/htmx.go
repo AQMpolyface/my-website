@@ -2,7 +2,6 @@ package htmx
 
 func SuccessRegister() string {
 	return `
-
 	<div>
     <h5 style="color:green;">Successful registration. You can now login</h5>
     <br>

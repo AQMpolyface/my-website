@@ -26,6 +26,4 @@ type Track struct {
 // defining a few cowonst
 const endpoint string = "https://api.spotify.com/v1/me/playlists"
 
-var playlistFileJson string = "playlist.json"
-
 const playlistUrl string = "https://api.spotify.com/v1/playlists/"
