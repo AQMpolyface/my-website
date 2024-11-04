@@ -150,7 +150,6 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("error connecting to db", err)
 			return
 		}
-
 		defer db.Close()
 		var username1 string
 		username = strings.TrimSpace(username)
@@ -167,10 +166,10 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 		cookie := http.Cookie{
 			Name:     strings.TrimSpace("uuid"),
 			Value:    strings.TrimSpace(username1),
-			Path:     "/",                   // Set the path if necessary
-			HttpOnly: true,                  // Set HttpOnly if you want to prevent JavaScript access
-			Secure:   true,                  // Set Secure if the cookie should only be sent over HTTPS
-			SameSite: http.SameSiteNoneMode, // Set SameSite attribute to None
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteNoneMode,
 		}
 		http.SetCookie(w, &cookie)
 		fmt.Fprintf(w, `<h4 style="color:green;">You are logged in. you can you go to <a href="https://polyface.ch/protected">https://polyface.ch/protected</a></h4>`)
@@ -188,17 +187,24 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func serveVideoHandler(w http.ResponseWriter, r *http.Request) {
-	kingData, err := os.ReadFile("html/video/pickvid.html")
-	if err != nil {
-		fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
-		http.Error(w, "Error reading html/video/pickvid.html", http.StatusInternalServerError)
-		return
-	}
-	cookie, err := r.Cookie("authenticated")
 
-	if cookie != nil && cookie.Value == os.Getenv("cookie") {
+
+	cookie, err := r.Cookie("uuid")
+if cookie != nil {
+	hasValidCookie, err := database.CheckCookie(cookie.Value)
+	if err != nil {
+		log.Fatal("error retrieveing cookie")
+	}
+}
+	  hasValidCookie {
 		http.Redirect(w, r, "/protected", http.StatusSeeOther)
 	} else {
+		kingData, err := os.ReadFile("html/video/pickvid.html")
+			if err != nil {
+				fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
+				http.Error(w, "Error reading html/video/pickvid.html", http.StatusInternalServerError)
+				return
+			}
 		fmt.Fprintf(w, string(kingData))
 	}
 }

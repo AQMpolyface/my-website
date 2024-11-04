@@ -59,7 +59,6 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Println("unauthorized user:", username)
 		//w.WriteHeader(http.StatusForbidden)
-		//w.Header().Set("Content-Type", "text/html")
 		errorMessage := htmx.UnauthorizedRegister()
 		fmt.Fprintf(w, errorMessage)
 		return
@@ -75,7 +74,6 @@ func PasswordRight(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("error connecting to db", err)
 		return
 	}
-
 	defer db.Close()
 	uuid, err := MakeUuid(db)
 	if err != nil || uuid == "" {
@@ -85,10 +83,10 @@ func PasswordRight(w http.ResponseWriter, r *http.Request) {
 	cookie := http.Cookie{
 		Name:     strings.TrimSpace("uuid"),
 		Value:    strings.TrimSpace(uuid),
-		Path:     "/",                   // Set the path if necessary
-		HttpOnly: true,                  // Set HttpOnly if you want to prevent JavaScript access
-		Secure:   true,                  // Set Secure if the cookie should only be sent over HTTPS
-		SameSite: http.SameSiteNoneMode, // Set SameSite attribute to None
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
 	}
 	http.SetCookie(w, &cookie)
 	// Response data to send back
@@ -102,14 +100,12 @@ func ProtectionHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-	valid, err := checkCookie(cookie.Value)
+	valid, err := CheckCookie(cookie.Value)
 
 	if !valid {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
-	// fmt.Println(cookie.Value)
 
 	data, err := os.ReadFile("html/video/pickafterauth.html")
 	if err != nil {
@@ -121,7 +117,7 @@ func ProtectionHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(data))
 }
 
-func checkCookie(cookie string) (bool, error) {
+func CheckCookie(cookie string) (bool, error) {
 	db, err := ConnectToDB()
 	if err != nil {
 		fmt.Println("error connecting to db:", err)
