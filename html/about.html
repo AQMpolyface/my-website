@@ -4,19 +4,169 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>About Me</title>
-        <link rel="stylesheet" href="/css/about.css" />
-        <link rel="stylesheet" href="/css/general.css" />
+        <style>
+            :root {
+                --primary-color: #89b4fa;
+                --bg-color: #1e1e2e;
+                --text-color: #cdd6f4;
+                --section-bg: #313244;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                line-height: 1.6;
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                padding: 20px;
+            }
+
+            main {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            header {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+                color: var(--primary-color);
+                margin-bottom: 20px;
+                text-shadow: 0 0 10px rgba(137, 180, 250, 0.3);
+            }
+
+            section {
+                background: var(--section-bg);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 30px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+            }
+
+            section:hover {
+                transform: translateY(-5px);
+            }
+
+            .title {
+                color: var(--primary-color);
+                font-size: 1.5em;
+                margin-bottom: 15px;
+                border-bottom: 2px solid var(--primary-color);
+                padding-bottom: 5px;
+            }
+
+            p {
+                margin-bottom: 15px;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin: 15px 0;
+            }
+
+            a {
+                color: var(--primary-color);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            a:hover {
+                color: #b4befe;
+                text-decoration: underline;
+            }
+
+            ol {
+                margin-left: 20px;
+                margin-bottom: 15px;
+            }
+
+            li {
+                margin-bottom: 5px;
+            }
+
+            .goBackIndex {
+                display: inline-block;
+                background-color: var(--primary-color);
+                color: var(--bg-color);
+                padding: 10px 20px;
+                border-radius: 6px;
+                margin: 20px;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+
+            .goBackIndex:hover {
+                background-color: #b4befe;
+                transform: scale(1.05);
+                text-decoration: none;
+            }
+
+            /* Skills tags */
+            .skills {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin: 15px 0;
+            }
+
+            .skill-tag {
+                background: rgba(137, 180, 250, 0.2);
+                padding: 5px 12px;
+                border-radius: 15px;
+                font-size: 0.9em;
+            }
+
+            /* Responsive design */
+            @media (max-width: 600px) {
+                main {
+                    padding: 10px;
+                }
+
+                section {
+                    padding: 15px;
+                }
+
+                h1 {
+                    font-size: 2em;
+                }
+            }
+        </style>
     </head>
     <body>
         <main>
             <header>
                 <h1>About Me</h1>
+                <p>Swiss Developer & Cybersecurity Enthusiast :3</p>
             </header>
-            <h2 class="title">About me in general :3</h2>
-            <p>
-                I am a 17 years old from Switzerland, and I speak Italian,
-                French, and English. I like computer stuff in general.
-            </p>
+
+            <section>
+                <h2 class="title">About me in general :3</h2>
+                <p>
+                    I am a 17 years old from Switzerland, and I speak Italian,
+                    French, and English. I like computer stuff in general.
+                </p>
+                <div class="skills">
+                    <span class="skill-tag">Italian</span>
+                    <span class="skill-tag">French</span>
+                    <span class="skill-tag">English</span>
+                </div>
+            </section>
+
             <section>
                 <h2 class="title">My Operating System</h2>
                 <p>
@@ -24,19 +174,37 @@
                     system, and i use hyprland.
                 </p>
                 <img src="/images/archbtwv2.png" alt="I use Arch, by the way" />
+                <div class="skills">
+                    <span class="skill-tag">CachyOS</span>
+                    <span class="skill-tag">Arch Linux</span>
+                    <span class="skill-tag">Hyprland</span>
+                </div>
             </section>
+
             <section>
                 <h2 class="title">Programming Journey</h2>
                 <p>
                     I have a passion for computers and have recently started
                     doing a lot of programming. I am proficient in Go and have
-                    some experience with JavaScript. I aspire to learn a variety
-                    of programming languages, including Zig, Gleam, Odin, C,
-                    C++, Dart, Haskell and Assembly. I shared a few of my
-                    projects on
+                    some experience with JavaScript.
+                </p>
+                <p>I aspire to learn:</p>
+                <div class="skills">
+                    <span class="skill-tag">Zig</span>
+                    <span class="skill-tag">Gleam</span>
+                    <span class="skill-tag">Odin</span>
+                    <span class="skill-tag">C</span>
+                    <span class="skill-tag">C++</span>
+                    <span class="skill-tag">Dart</span>
+                    <span class="skill-tag">Haskell</span>
+                    <span class="skill-tag">Assembly</span>
+                </div>
+                <p>
+                    Check out my projects on
                     <a href="https://github.com/AQMpolyface/">my GitHub</a>.
                 </p>
             </section>
+
             <section>
                 <h2 class="title">Cybersecurity Enthusiast</h2>
                 <p>
@@ -45,35 +213,41 @@
                     battalion in the army soon. :3
                 </p>
             </section>
+
             <section>
                 <h2 class="title">Gaming Background</h2>
                 <p>
                     I used to play a lot of video games, such as Overwatch and
-                    Doom. My peak rank in Overwatch was Diamond 1. Since you are
-                    here, I'm going to give you my top three video games of all
-                    time:
+                    Doom. My peak rank in Overwatch was Diamond 1.
                 </p>
+                <p>My top three video games of all time:</p>
                 <ol>
                     <li>Doom Eternal</li>
                     <li>Overwatch</li>
                     <li>Ark: Survival Evolved</li>
                 </ol>
             </section>
+
             <section>
                 <h2 class="title">Text Editor</h2>
                 <p>
-                    I use several text editors, like Zed, Kate, Sublime Text,
-                    VSCodium, and Neovim. I use them all, but I would say my
-                    main one is Zed (with Vim motions), followed closely by
-                    Neovim. I mainly use the catppuccin mocha theme, and
-                    sometimes pine rosé moon.
+                    I use several text editors, with Zed (with Vim motions)
+                    being my main one, followed closely by Neovim. I also use
+                    Kate, Sublime Text, and VSCodium.
+                </p>
+                <div class="skills">
+                    <span class="skill-tag">Zed</span>
+                    <span class="skill-tag">Neovim</span>
+                    <span class="skill-tag">Kate</span>
+                    <span class="skill-tag">Sublime Text</span>
+                    <span class="skill-tag">VSCodium</span>
+                </div>
+                <p>
+                    Theme preference: catppuccin mocha, sometimes pine rosé moon
                 </p>
             </section>
         </main>
 
         <a href="/" class="goBackIndex" role="button">Go Back to Index</a>
-        <footer>
-            <div></div>
-        </footer>
     </body>
 </html>

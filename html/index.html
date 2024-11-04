@@ -4,90 +4,206 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Welcome Page</title>
-        <link rel="stylesheet" href="/css/index.css" />
-        <link rel="stylesheet" href="/css/general.css" />
         <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+        <style>
+            /* Catppuccin Mocha Colors */
+            :root {
+                --rosewater: #f5e0dc;
+                --flamingo: #f2cdcd;
+                --pink: #f5c2e7;
+                --mauve: #cba6f7;
+                --red: #f38ba8;
+                --maroon: #eba0ac;
+                --peach: #fab387;
+                --yellow: #f9e2af;
+                --green: #a6e3a1;
+                --teal: #94e2d5;
+                --sky: #89dceb;
+                --sapphire: #74c7ec;
+                --blue: #89b4fa;
+                --lavender: #b4befe;
+                --text: #cdd6f4;
+                --subtext1: #bac2de;
+                --subtext0: #a6adc8;
+                --overlay2: #9399b2;
+                --overlay1: #7f849c;
+                --overlay0: #6c7086;
+                --surface2: #585b70;
+                --surface1: #45475a;
+                --surface0: #313244;
+                --base: #1e1e2e;
+                --mantle: #181825;
+                --crust: #11111b;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                background-color: var(--base);
+                color: var(--text);
+                line-height: 1.6;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                padding: 2rem;
+            }
+
+            .container {
+                background: var(--surface0);
+                padding: 2rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                max-width: 600px;
+                width: 100%;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            h1 {
+                color: var(--blue);
+                margin-bottom: 1.5rem;
+                font-size: 2.5rem;
+                text-shadow: 0 0 10px rgba(137, 180, 250, 0.3);
+            }
+
+            .link-container {
+                display: grid;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+
+            .link {
+                display: block;
+                padding: 1rem;
+                background: var(--surface1);
+                color: var(--text);
+                text-decoration: none;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+
+            .link:hover {
+                background: var(--surface2);
+                transform: translateY(-2px);
+                border-color: var(--blue);
+            }
+
+            #trollcontainer {
+                margin-top: 2rem;
+            }
+
+            .trollButton {
+                margin: 1rem 0.5rem;
+                padding: 0.8rem 2rem;
+                border: none;
+                border-radius: 6px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                color: var(--base);
+                font-weight: bold;
+            }
+
+            .trollButton[id="yes"] {
+                background-color: var(--green);
+            }
+
+            .trollButton[id="no"] {
+                background-color: var(--red);
+            }
+
+            .trollButton:hover {
+                transform: translateY(-2px);
+                filter: brightness(1.1);
+            }
+
+            footer {
+                text-align: center;
+                padding: 2rem;
+                background: var(--surface0);
+                width: 100%;
+                position: fixed;
+                bottom: 0;
+            }
+
+            footer p {
+                margin: 0.5rem 0;
+                color: var(--subtext1);
+            }
+
+            footer a {
+                color: var(--blue);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            footer a:hover {
+                color: var(--lavender);
+            }
+
+            /* Responsive design */
+            @media (max-width: 600px) {
+                body {
+                    padding: 1rem;
+                }
+
+                .container {
+                    padding: 1.5rem;
+                }
+
+                h1 {
+                    font-size: 2rem;
+                }
+            }
+        </style>
     </head>
     <body>
         <div class="container">
             <h1>Welcome to My Website!</h1>
             <p>Thank you for visiting.</p>
-            <p>
-                this website is open source. see
-                <a href="https://github.com/AQMpolyface/my-website">here</a>
-            </p>
-            <p>
+            <div class="link-container">
                 <a href="/about" class="link" role="button"
                     >Learn more about me</a
                 >
-            </p>
-            <p>
                 <a href="/projects" class="link" role="button"
                     >See my projects</a
                 >
-            </p>
-            <p><a href="/contact" class="link" role="button">Contact me!</a></p>
-            <p>
+                <a href="/contact" class="link" role="button">Contact me!</a>
                 <a href="/privacy_policy" class="link" role="button"
-                    >privacy policy</a
+                    >Privacy Policy</a
                 >
-            </p>
+            </div>
         </div>
+
         <div class="container" id="trollcontainer">
-            <h5 style="color: white">do you like my website?</h5>
-
-            <button
-                id="yes"
-                onClick="onYes()"
-                class="trollButton"
-                style="background-color: #4caf50"
-            >
-                yes
-            </button>
-            <button
-                id="no"
-                class="trollButton"
-                style="background-color: #f44336ed"
-            >
-                no
-            </button>
+            <h5>do you like my website?</h5>
+            <button id="yes" onClick="onYes()" class="trollButton">yes</button>
+            <button id="no" class="trollButton">no</button>
         </div>
-        <script>
-            const yesbutton = document.getElementById("yes");
-            const nobutton = document.getElementById("no");
-            nobutton.addEventListener("mouseenter", () => {
-                yesbutton.innerHTML = "no";
-                yesbutton.setAttribute("style", "background-color: #f44336ed;");
-                yesbutton.removeAttribute("onClick");
 
-                nobutton.innerHTML = "yes";
-                nobutton.setAttribute("onClick", "onYes()");
-                nobutton.setAttribute("style", "background-color: #4CAF50;");
-
-                console.log("uwu enter");
-            });
-
-            nobutton.addEventListener("mouseleave", () => {
-                yesbutton.innerHTML = "yes";
-                yesbutton.setAttribute("onClick", "onYes()");
-                yesbutton.setAttribute("style", "background-color: #4CAF50;");
-
-                nobutton.innerHTML = "no";
-                nobutton.setAttribute("style", "background-color: #f44336;");
-                nobutton.removeAttribute("onClick");
-
-                console.log("uwu leave");
-            });
-
-            /* yesButton.addEventListener("click", () => {
-        alert("You pressed the Yes button!");
-        // You can add more functionality here
-    });*/
-
-            function onYes() {
-                window.location.assign("/uwu");
-            }
-        </script>
         <footer>
             <p>Author: me :3</p>
             <p>
@@ -95,5 +211,32 @@
             </p>
             <p>&copy; Copyright polyface Corp, 2024</p>
         </footer>
+
+        <script>
+            const yesbutton = document.getElementById("yes");
+            const nobutton = document.getElementById("no");
+
+            nobutton.addEventListener("mouseenter", () => {
+                yesbutton.innerHTML = "no";
+                yesbutton.style.backgroundColor = "var(--red)";
+                yesbutton.removeAttribute("onClick");
+                nobutton.innerHTML = "yes";
+                nobutton.setAttribute("onClick", "onYes()");
+                nobutton.style.backgroundColor = "var(--green)";
+            });
+
+            nobutton.addEventListener("mouseleave", () => {
+                yesbutton.innerHTML = "yes";
+                yesbutton.setAttribute("onClick", "onYes()");
+                yesbutton.style.backgroundColor = "var(--green)";
+                nobutton.innerHTML = "no";
+                nobutton.style.backgroundColor = "var(--red)";
+                nobutton.removeAttribute("onClick");
+            });
+
+            function onYes() {
+                window.location.assign("/uwu");
+            }
+        </script>
     </body>
 </html>
