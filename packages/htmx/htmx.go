@@ -18,7 +18,7 @@ func BadPassword() string {
 }
 func ErrorRegister() string {
 	return `
-		<h5 style="color:red;">Registration failed. Please try again or contact thw admin uwu.</h5>
+		<h5 style="color:red;">Registration failed. Please try again or contact the admin uwu.</h5>
 		<br />
 		`
 
