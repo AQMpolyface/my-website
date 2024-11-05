@@ -197,7 +197,7 @@ func serveAuthHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil && err != http.ErrNoCookie {
 		log.Fatal("error checking cookie")
 	}
-
+	if cookie != nil {
 	db, err := database.ConnectToDB()
 	if err != nil {
 		http.Error(w, "error connecting to database", http.StatusInternalServerError)
@@ -212,7 +212,10 @@ func serveAuthHandler(w http.ResponseWriter, r *http.Request) {
 
 	if hasValidCookie {
 		http.Redirect(w, r, "/protected", http.StatusSeeOther)
-	} else {
+		return
+	}
+}
+
 		kingData, err := os.ReadFile("html/video/pickvid.html")
 		if err != nil {
 			fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
