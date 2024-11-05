@@ -58,7 +58,7 @@
         <div id="content">
             <form
                 id="passwordForm"
-                hx-post="/submit-password"
+                hx-post="/api/submit-password"
                 hx-target="#content"
                 hx-swap="innerHTML"
             >
@@ -83,7 +83,7 @@
             <br />
             <button
                 class="register-button"
-                hx-get="/register"
+                hx-get="/api/register"
                 hx-target="#content"
                 hx-swap="outerHTML"
             >
