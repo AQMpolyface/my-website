@@ -53,21 +53,30 @@
                 border-radius: 8px;
                 overflow: hidden;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                max-width: 100%;
+            }
+
+            .video-title {
+                padding: 1rem;
+                margin: 0;
+                background: var(--secondary-color);
+                font-size: 1.25rem;
             }
 
             .video-player {
                 width: 100%;
-                max-height: 70vh;
-                background: #000;
+                max-height: 90vh; /* Adjust as needed to control height on large screens */
                 aspect-ratio: 16 / 9;
-                max-width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                background: #000;
             }
 
             .myVideo {
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
+                object-fit: cover; /* This makes the poster cover the entire video player area */
             }
 
             .video-controls {
@@ -83,21 +92,6 @@
                 padding: 0.5rem;
                 border-radius: 4px;
                 font-size: 0.875rem;
-            }
-
-            /* Responsive adjustments for smaller screens */
-            @media (max-width: 768px) {
-                .container {
-                    padding: 10px;
-                }
-
-                .video-wrapper {
-                    margin: 0;
-                }
-
-                .video-player {
-                    max-height: 50vh;
-                }
             }
         </style>
     </head>
