@@ -198,33 +198,33 @@ func serveAuthHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("error checking cookie")
 	}
 	if cookie != nil {
-	db, err := database.ConnectToDB()
-	if err != nil {
-		http.Error(w, "error connecting to database", http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-	hasValidCookie, err = database.CheckUuid(db, cookie.Value)
-	if err != nil {
-		http.Error(w, "error retrieving cookie", http.StatusInternalServerError)
-		return
-	}
-
-	if hasValidCookie {
-		http.Redirect(w, r, "/protected", http.StatusSeeOther)
-		return
-	}
-}
-
-		kingData, err := os.ReadFile("html/video/pickvid.html")
+		db, err := database.ConnectToDB()
 		if err != nil {
-			fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
-			http.Error(w, "Error reading html/video/pickvid.html", http.StatusInternalServerError)
+			http.Error(w, "error connecting to database", http.StatusInternalServerError)
 			return
 		}
-		fmt.Fprintf(w, string(kingData))
+		defer db.Close()
+		hasValidCookie, err = database.CheckUuid(db, cookie.Value)
+		if err != nil {
+			http.Error(w, "error retrieving cookie", http.StatusInternalServerError)
+			return
+		}
+
+		if hasValidCookie {
+			http.Redirect(w, r, "/protected", http.StatusSeeOther)
+			return
+		}
 	}
+
+	kingData, err := os.ReadFile("html/video/pickvid.html")
+	if err != nil {
+		fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
+		http.Error(w, "Error reading html/video/pickvid.html", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, string(kingData))
 }
+
 func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	filename2 := r.URL.Path[len("/projects/temp/"):]
 	fmt.Println("filename2 = ", filename2)
