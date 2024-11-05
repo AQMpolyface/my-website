@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css/general.css">
 </head>
    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
-   <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
   <script>
         loadind = document.getElementById("loading");
 
@@ -74,7 +73,7 @@ while (true) {
 </style>
 </head>
 <body>
-    <form class="container" hx-post="/submit-playlist-json"  hx-on="htmx:responseError:errorMessage">
+    <form class="container" hx-post="/api/submit-playlist-json"  hx-on="htmx:responseError:errorMessage">
         <label for="token">Enter your token here.</label>
         <input type="token" id="token" name="token" required placeholder="Enter your token"><br><br>
 

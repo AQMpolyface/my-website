@@ -31,7 +31,7 @@ func KingHandler(w http.ResponseWriter, r *http.Request) {
 	if !valid {
 		http.Redirect(w, r, "/", http.StatusUnauthorized)
 	} else {
-		data, err := os.ReadFile("/html/video/king.html")
+		data, err := os.ReadFile("html/video/king.html")
 		if err != nil {
 			http.Error(w, "error reading file king.html", http.StatusInternalServerError)
 			return
@@ -64,7 +64,7 @@ func TowerHandler(w http.ResponseWriter, r *http.Request) {
 	if !valid {
 		http.Redirect(w, r, "/", http.StatusUnauthorized)
 	} else {
-		data, err := os.ReadFile("/html/video/towers.html")
+		data, err := os.ReadFile("html/video/towers.html")
 		if err != nil {
 			http.Error(w, "reading file towers.html", http.StatusInternalServerError)
 			return
@@ -97,7 +97,7 @@ func FellowshipHandler(w http.ResponseWriter, r *http.Request) {
 	if !valid {
 		http.Redirect(w, r, "/", http.StatusUnauthorized)
 	} else {
-		data, err := os.ReadFile("/html/video/fellowship.html")
+		data, err := os.ReadFile("html/video/fellowship.html")
 		if err != nil {
 			http.Error(w, "error reading file followship.html", http.StatusInternalServerError)
 			return
