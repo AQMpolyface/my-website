@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The fellowship of the ring - Lord of the Rings</title>
+        <style>
+            :root {
+                --primary-color: #2a4365;
+                --secondary-color: #4a5568;
+            }
+
+            body {
+                margin: 0;
+                padding: 20px;
+                background-color: #1a202c;
+                color: #fff;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .navigation {
+                margin-bottom: 2rem;
+            }
+
+            .back-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: var(--secondary-color);
+                color: white;
+                text-decoration: none;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: background-color 0.2s;
+            }
+
+            .back-button:hover {
+                background-color: var(--primary-color);
+            }
+
+            .video-wrapper {
+                margin-bottom: 2rem;
+                background: var(--primary-color);
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .video-title {
+                padding: 1rem;
+                margin: 0;
+                background: var(--secondary-color);
+                font-size: 1.25rem;
+            }
+
+            .video-player {
+                width: 100%;
+                max-height: 70vh;
+                background: #000;
+                aspect-ratio: 16 / 9;
+            }
+
+            .myVideo {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .video-controls {
+                padding: 1rem;
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                background: var(--secondary-color);
+            }
+
+            .timestamp {
+                background: rgba(0, 0, 0, 0.3);
+                padding: 0.5rem;
+                border-radius: 4px;
+                font-size: 0.875rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="navigation">
+                <a href="/protected" class="back-button">← Back to Movies</a>
+            </div>
+
+            <div class="video-wrapper">
+                <h2 class="video-title">The fellowship of the rings</h2>
+                <div class="video-player">
+                    <video
+                        class="myVideo"
+                        controls
+                        id="video1"
+                        preload="metadata"
+                        playsinline
+                        controlsList="nodownload"
+                        poster="/images/protected/the_fellowship_of_the_ring.jpg"
+                    >
+                        <source
+                            src="/images/protected/uwu1.mp4"
+                            type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="video-controls">
+                    <span class="timestamp" id="timestamp1">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            class VideoManager {
+                constructor() {
+                    this.video = document.querySelector(".myVideo");
+                    this.initializeVideo();
+                }
+
+                formatTime(seconds) {
+                    const h = Math.floor(seconds / 3600);
+                    const m = Math.floor((seconds % 3600) / 60);
+                    const s = Math.floor(seconds % 60);
+                    return `${h > 0 ? h + ":" : ""}${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+                }
+
+                setVideoTimestamp(videoId, time) {
+                    const expiryDate = new Date();
+                    expiryDate.setDate(expiryDate.getDate() + 30);
+                    document.cookie = `${videoId}Timestamp=${Math.floor(time)}; expires=${expiryDate.toUTCString()}; path=/; SameSite=Strict`;
+                }
+
+                getVideoTimestamp(videoId) {
+                    const cookies = document.cookie.split("; ");
+                    const timestampCookie = cookies.find((cookie) =>
+                        cookie.startsWith(`${videoId}Timestamp=`),
+                    );
+                    return timestampCookie
+                        ? parseInt(timestampCookie.split("=")[1])
+                        : 0;
+                }
+
+                initializeVideo() {
+                    if (!this.video) return;
+
+                    // Set initial time from cookie
+                    const savedTime = this.getVideoTimestamp(this.video.id);
+                    if (savedTime > 0) {
+                        this.video.currentTime = savedTime;
+                    }
+
+                    // Update timestamp display
+                    const timestampElement =
+                        document.getElementById("timestamp1");
+
+                    // Time update event
+                    this.video.addEventListener("timeupdate", () => {
+                        if (timestampElement) {
+                            timestampElement.textContent = this.formatTime(
+                                this.video.currentTime,
+                            );
+                        }
+                        this.setVideoTimestamp(
+                            this.video.id,
+                            this.video.currentTime,
+                        );
+                    });
+
+                    // Load optimization
+                    this.video.addEventListener("loadedmetadata", () => {
+                        if (timestampElement) {
+                            timestampElement.textContent = this.formatTime(
+                                this.video.currentTime,
+                            );
+                        }
+                    });
+
+                    // Error handling
+                    this.video.addEventListener("error", () => {
+                        console.error(`Error loading video: ${this.video.id}`);
+                    });
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                new VideoManager();
+            });
+        </script>
+    </body>
+</html>

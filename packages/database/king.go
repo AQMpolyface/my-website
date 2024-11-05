@@ -100,7 +100,13 @@ func ProtectionHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-	valid, err := CheckCookie(cookie.Value)
+	db, err := ConnectToDB()
+	if err != nil {
+		http.Error(w, "error connecting to database", http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+	valid, err := CheckUuid(db, cookie.Value)
 
 	if !valid {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -115,28 +121,4 @@ func ProtectionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, string(data))
-}
-
-func CheckCookie(cookie string) (bool, error) {
-	db, err := ConnectToDB()
-	if err != nil {
-		fmt.Println("error connecting to db:", err)
-		return false, err
-	}
-
-	defer db.Close()
-	valid, err := CheckUuid(db, cookie)
-	if err != nil {
-		fmt.Println("error retrieving uuid:", err)
-		return false, err
-	}
-	if valid {
-		return true, nil
-	} else if !valid {
-		return false, nil
-	} else {
-		fmt.Println("non true/false :(")
-		return false, nil
-	}
-
 }

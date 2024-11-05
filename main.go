@@ -15,6 +15,7 @@ import (
 	"website/packages/database"
 	"website/packages/htmx"
 	"website/packages/playlistjson"
+	"website/packages/video"
 )
 
 const visits string = "visits.txt"
@@ -24,10 +25,9 @@ var playlistFile string
 
 func main() {
 	http.HandleFunc("/", mainHandler)
-
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
-	http.HandleFunc("/protectedfiles/", serveProtectedFiles)
+	http.HandleFunc("/vid/", serveProtectedFiles)
 	fmt.Println("Server started at :8008")
 	log.Fatal(http.ListenAndServe(":8008", nil))
 }
@@ -45,6 +45,7 @@ func serveProtectedFiles(w http.ResponseWriter, r *http.Request) {
 	}
 	db, err := database.ConnectToDB()
 	if err != nil {
+		http.Error(w, "error connecting to db", http.StatusInternalServerError)
 		fmt.Println("error connecting to db", err)
 		return
 	}
@@ -55,12 +56,12 @@ func serveProtectedFiles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// fmt.Println(cookie.Value)
-	if valid {
-
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+	if !valid {
+		http.Redirect(w, r, "/", http.StatusUnauthorized)
 		return
 	} else {
 		http.StripPrefix("/vid", http.FileServer(http.Dir("vid"))).ServeHTTP(w, r)
+		return
 	}
 }
 func mainHandler(w http.ResponseWriter, r *http.Request) {
@@ -81,26 +82,32 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		projectsHandler(w, r)
 	case "/projects/playlistjson":
 		playlistjsonHandler(w, r)
-	case "/submit-playlist-json":
+	case "/api/submit-playlist-json":
 		playlistjsonHandlerPost(w, r)
-	case "/submit-password":
+	case "/api/submit-password":
 		passwordPost(w, r)
-	case "/submit-registration":
+	case "/api/submit-registration":
 		database.RegisterPost(w, r)
-	case "/submit":
+	case "/api/submit":
 		formHandler(w, r)
 	case "/uwu":
 		uwuHandler(w, r)
-	case "/uwunumber":
+	case "/api/uwunumber":
 		uwuNumberHandler(w, r)
 	case "/projects/temp/":
 		serveFileHandler(w, r)
 	case "/auth":
 		serveVideoHandler(w, r)
-	case "/register":
+	case "/api/register":
 		registerHandler(w, r)
-	case "/relogin":
+	case "/api/relogin":
 		reloginHandler(w, r)
+	case "/protected/king":
+		video.KingHandler(w, r)
+	case "/protected/fellowship":
+		video.FellowshipHandler(w, r)
+	case "/protected/towers":
+		video.TowerHandler(w, r)
 	default:
 		notFoundHandler(w, r)
 	}
@@ -151,10 +158,10 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer db.Close()
-		var username1 string
+		var uuid string
 		username = strings.TrimSpace(username)
 		//get the uuid of the logged in person
-		err = db.QueryRow("SELECT uuid FROM authentification WHERE username = ?", username).Scan(&username1)
+		err = db.QueryRow("SELECT uuid FROM authentification WHERE username = ?", username).Scan(&uuid)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				fmt.Println("No rows returned for username:", username)
@@ -165,7 +172,7 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 		}
 		cookie := http.Cookie{
 			Name:     strings.TrimSpace("uuid"),
-			Value:    strings.TrimSpace(username1),
+			Value:    strings.TrimSpace(uuid),
 			Path:     "/",
 			HttpOnly: true,
 			Secure:   true,
@@ -175,10 +182,8 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `<h4 style="color:green;">You are logged in. you can you go to <a href="https://polyface.ch/protected">https://polyface.ch/protected</a></h4>`)
 		http.Redirect(w, r, "/protected", http.StatusSeeOther)
 		//err := database.AddUser(db, username, password)
-
 		return
 	} else {
-
 		fmt.Println("Invalid password.")
 		errorMessage := htmx.BadPassword()
 		fmt.Fprintf(w, errorMessage)
@@ -187,24 +192,34 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func serveVideoHandler(w http.ResponseWriter, r *http.Request) {
-
-
+	var hasValidCookie bool
 	cookie, err := r.Cookie("uuid")
-if cookie != nil {
-	hasValidCookie, err := database.CheckCookie(cookie.Value)
 	if err != nil {
-		log.Fatal("error retrieveing cookie")
+		log.Fatal("error checking cookie")
 	}
-}
-	  hasValidCookie {
+	if cookie != nil {
+		db, err := database.ConnectToDB()
+		if err != nil {
+			http.Error(w, "error connecting to database", http.StatusInternalServerError)
+			return
+		}
+		defer db.Close()
+		hasValidCookie, err = database.CheckUuid(db, cookie.Value)
+		if err != nil {
+			http.Error(w, "error retrieving cookie", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	if hasValidCookie {
 		http.Redirect(w, r, "/protected", http.StatusSeeOther)
 	} else {
 		kingData, err := os.ReadFile("html/video/pickvid.html")
-			if err != nil {
-				fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
-				http.Error(w, "Error reading html/video/pickvid.html", http.StatusInternalServerError)
-				return
-			}
+		if err != nil {
+			fmt.Printf("error readinf %s: %s", "html/video/pickvid.html", err)
+			http.Error(w, "Error reading html/video/pickvid.html", http.StatusInternalServerError)
+			return
+		}
 		fmt.Fprintf(w, string(kingData))
 	}
 }
@@ -294,7 +309,7 @@ func playlistjsonHandlerPost(w http.ResponseWriter, r *http.Request) {
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println("unabke to read request body")
+		fmt.Println("unable to read request body")
 		http.Error(w, "Unable to read request body", http.StatusBadRequest)
 		return
 	}
@@ -507,5 +522,4 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprint(w, string(aboutData))
-
 }

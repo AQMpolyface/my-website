@@ -183,7 +183,6 @@ func CheckUuid(db *sql.DB, uuid string) (bool, error) {
 	// Query to count how many times the UUID exists
 	err := db.QueryRow("SELECT COUNT(*) FROM authentification WHERE UUID = ?", uuid).Scan(&count)
 	if err != nil {
-		// Handle any potential error
 		return false, err
 	}
 
