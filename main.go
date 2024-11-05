@@ -97,7 +97,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 	case "/projects/temp/":
 		serveFileHandler(w, r)
 	case "/auth":
-		serveVideoHandler(w, r)
+		serveAuthHandler(w, r)
 	case "/api/register":
 		registerHandler(w, r)
 	case "/api/relogin":
@@ -191,24 +191,23 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func serveVideoHandler(w http.ResponseWriter, r *http.Request) {
+func serveAuthHandler(w http.ResponseWriter, r *http.Request) {
 	var hasValidCookie bool
 	cookie, err := r.Cookie("uuid")
-	if err != nil {
+	if err != nil && err != http.ErrNoCookie {
 		log.Fatal("error checking cookie")
 	}
-	if cookie != nil {
-		db, err := database.ConnectToDB()
-		if err != nil {
-			http.Error(w, "error connecting to database", http.StatusInternalServerError)
-			return
-		}
-		defer db.Close()
-		hasValidCookie, err = database.CheckUuid(db, cookie.Value)
-		if err != nil {
-			http.Error(w, "error retrieving cookie", http.StatusInternalServerError)
-			return
-		}
+
+	db, err := database.ConnectToDB()
+	if err != nil {
+		http.Error(w, "error connecting to database", http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+	hasValidCookie, err = database.CheckUuid(db, cookie.Value)
+	if err != nil {
+		http.Error(w, "error retrieving cookie", http.StatusInternalServerError)
+		return
 	}
 
 	if hasValidCookie {
