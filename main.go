@@ -104,6 +104,8 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 		reloginHandler(w, r)
 	case "/protected/king":
 		video.KingHandler(w, r)
+	case "/protected/theoden":
+		video.TheodenHandler(w, r)
 	case "/protected/fellowship":
 		video.FellowshipHandler(w, r)
 	case "/protected/towers":
