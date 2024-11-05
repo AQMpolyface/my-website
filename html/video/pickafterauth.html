@@ -1,123 +1,150 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lord of the Rings Theater - Home</title>
-    <style>
-        :root {
-            --primary-color: #2a4365;
-            --secondary-color: #4a5568;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lord of the Rings Theater - Home</title>
+        <style>
+            :root {
+                --primary-color: #2a4365;
+                --secondary-color: #4a5568;
+            }
 
-        body {
-            margin: 0;
-            padding: 20px;
-            background-color: #1a202c;
-            color: #fff;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
+            body {
+                margin: 0;
+                padding: 20px;
+                background-color: #1a202c;
+                color: #fff;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+            }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
 
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
+            .movie-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+                margin-top: 2rem;
+            }
 
-        .movie-card {
-            background: var(--primary-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+            .movie-card {
+                background: var(--primary-color);
+                border-radius: 8px;
+                overflow: hidden;
+                transition: transform 0.2s;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
 
-        .movie-card:hover {
-            transform: translateY(-5px);
-        }
+            .movie-card:hover {
+                transform: translateY(-5px);
+            }
 
-        .movie-poster {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-        }
+            .movie-poster {
+                width: 100%;
+                height: 400px;
+                object-fit: cover;
+            }
 
-        .movie-info {
-            padding: 1rem;
-            background: var(--secondary-color);
-        }
+            .movie-info {
+                padding: 1rem;
+                background: var(--secondary-color);
+            }
 
-        .movie-title {
-            margin: 0;
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
+            .movie-title {
+                margin: 0;
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+            }
 
-        .watch-button {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
+            .watch-button {
+                display: inline-block;
+                background: var(--primary-color);
+                color: white;
+                text-decoration: none;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: background-color 0.2s;
+            }
 
-        .watch-button:hover {
-            background-color: #1a365d;
-        }
+            .watch-button:hover {
+                background-color: #1a365d;
+            }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Lord of the Rings Theater</h1>
+            .header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Lord of the Rings Theater</h1>
+            </div>
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <img
+                        src="/images/protected/the_fellowship_of_ring.jpg"
+                        alt="Fellowship of the Ring"
+                        class="movie-poster"
+                    />
+                    <div class="movie-info">
+                        <h2 class="movie-title">The Fellowship of the Ring</h2>
+                        <a href="/protected/fellowship" class="watch-button"
+                            >Watch Now</a
+                        >
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <img
+                        src="/images/protected/the_two_towers.jpg"
+                        alt="The Two Towers"
+                        class="movie-poster"
+                    />
+                    <div class="movie-info">
+                        <h2 class="movie-title">The Two Towers</h2>
+                        <a href="/protected/towers" class="watch-button"
+                            >Watch Now</a
+                        >
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <img
+                        src="/images/protected/The_Return_of_the_King_Poster_01-2655414658.jpg"
+                        alt="Return of the King"
+                        class="movie-poster"
+                    />
+                    <div class="movie-info">
+                        <h2 class="movie-title">The Return of the King</h2>
+                        <a href="/protected/king" class="watch-button"
+                            >Watch Now</a
+                        >
+                    </div>
+                </div>
+
+                <div class="movie-card">
+                    <img
+                        src="/images/archbtw.png"
+                        alt="Theoden Edit"
+                        class="movie-poster"
+                    />
+                    <div class="movie-info">
+                        <h2 class="movie-title">Theoden Edit</h2>
+                        <a href="theoden.html" class="watch-button"
+                            >Watch Now</a
+                        >
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="movie-grid">
-            <div class="movie-card">
-                <img src="/images/protected/the_fellowship_of_ring.jpg" alt="Fellowship of the Ring" class="movie-poster">
-                <div class="movie-info">
-                    <h2 class="movie-title">The Fellowship of the Ring</h2>
-                    <a href="fellowship.html" class="watch-button">Watch Now</a>
-                </div>
-            </div>
-
-            <div class="movie-card">
-                <img src="/images/protected/the_two_towers.jpg" alt="The Two Towers" class="movie-poster">
-                <div class="movie-info">
-                    <h2 class="movie-title">The Two Towers</h2>
-                    <a href="two-towers.html" class="watch-button">Watch Now</a>
-                </div>
-            </div>
-
-            <div class="movie-card">
-                <img src="/images/protected/The_Return_of_the_King_Poster_01-2655414658.jpg" alt="Return of the King" class="movie-poster">
-                <div class="movie-info">
-                    <h2 class="movie-title">The Return of the King</h2>
-                    <a href="return-king.html" class="watch-button">Watch Now</a>
-                </div>
-            </div>
-
-            <div class="movie-card">
-                <img src="/images/archbtw.png" alt="Theoden Edit" class="movie-poster">
-                <div class="movie-info">
-                    <h2 class="movie-title">Theoden Edit</h2>
-                    <a href="theoden.html" class="watch-button">Watch Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+    </body>
 </html>
