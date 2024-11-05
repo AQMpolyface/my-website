@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 	"website/packages/htmx"
 	//"website/packages/database"
 )
@@ -87,6 +88,7 @@ func PasswordRight(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,
+		Expires:  time.Now().Add(7 * 24 * time.Hour),
 	}
 	http.SetCookie(w, &cookie)
 	// Response data to send back

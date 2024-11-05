@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 	"website/packages/database"
 	"website/packages/htmx"
 	"website/packages/playlistjson"
@@ -179,6 +180,7 @@ func passwordPost(w http.ResponseWriter, r *http.Request) {
 			HttpOnly: true,
 			Secure:   true,
 			SameSite: http.SameSiteNoneMode,
+			Expires:  time.Now().Add(7 * 24 * time.Hour),
 		}
 		http.SetCookie(w, &cookie)
 		fmt.Fprintf(w, `<h4 style="color:green;">You are logged in. you can you go to <a href="https://polyface.ch/protected">https://polyface.ch/protected</a></h4>`)
