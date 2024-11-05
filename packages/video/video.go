@@ -33,7 +33,7 @@ func KingHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		data, err := os.ReadFile("/html/video/king.html")
 		if err != nil {
-			http.Error(w, "error connecting to db", http.StatusInternalServerError)
+			http.Error(w, "error reading file king.html", http.StatusInternalServerError)
 			return
 		}
 		fmt.Fprintf(w, string(data))
@@ -66,7 +66,7 @@ func TowerHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		data, err := os.ReadFile("/html/video/towers.html")
 		if err != nil {
-			http.Error(w, "error connecting to db", http.StatusInternalServerError)
+			http.Error(w, "reading file towers.html", http.StatusInternalServerError)
 			return
 		}
 		fmt.Fprintf(w, string(data))
@@ -99,7 +99,7 @@ func FellowshipHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		data, err := os.ReadFile("/html/video/fellowship.html")
 		if err != nil {
-			http.Error(w, "error connecting to db", http.StatusInternalServerError)
+			http.Error(w, "error reading file followship.html", http.StatusInternalServerError)
 			return
 		}
 		fmt.Fprintf(w, string(data))
